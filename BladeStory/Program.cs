@@ -17,7 +17,10 @@ namespace BladeStory
                 return new MainGame(services);
             });
 
-            // 2. 注册游戏服务
+            // 2. 注册配置服务
+            services.AddConfigurations();
+
+            // 3. 注册游戏服务
             services.AddGameServices();
 
             using var serviceProvider = services.BuildServiceProvider();
