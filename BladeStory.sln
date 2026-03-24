@@ -1,15 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36908.2 d17.14
+VisualStudioVersion = 17.14.36908.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory", "BladeStory\BladeStory.csproj", "{F7A5E44A-C53C-4F65-B5E3-8D21C748341A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Service", "BladeStory.Service\BladeStory.Service.csproj", "{92DF3C0D-E0DA-44DB-AB8A-00D63B3BA4E3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C0962A71-B84A-4173-A833-AA60D97CF118} = {C0962A71-B84A-4173-A833-AA60D97CF118}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Infrastructure", "BladeStory.Infrastructure\BladeStory.Infrastructure.csproj", "{79440458-A292-4C5C-AEF5-FD75A1ABED05}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92DF3C0D-E0DA-44DB-AB8A-00D63B3BA4E3} = {92DF3C0D-E0DA-44DB-AB8A-00D63B3BA4E3}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Configuration", "BladeStory.Configuration\BladeStory.Configuration.csproj", "{10514CAC-3000-4C8B-9C3F-5B85D5D9FD43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Data", "BladeStory.Data\BladeStory.Data.csproj", "{B1D4BCF5-2D4B-4D43-AF82-C360698EF946}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Core", "BladeStory.Core\BladeStory.Core.csproj", "{C0962A71-B84A-4173-A833-AA60D97CF118}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Gameplay", "BladeStory.Gameplay\BladeStory.Gameplay.csproj", "{73CD913D-0DCF-47BE-AF5D-BC493B33FF8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Test", "BladeStory.Test\BladeStory.Test.csproj", "{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +47,22 @@ Global
 		{10514CAC-3000-4C8B-9C3F-5B85D5D9FD43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10514CAC-3000-4C8B-9C3F-5B85D5D9FD43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10514CAC-3000-4C8B-9C3F-5B85D5D9FD43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1D4BCF5-2D4B-4D43-AF82-C360698EF946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1D4BCF5-2D4B-4D43-AF82-C360698EF946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1D4BCF5-2D4B-4D43-AF82-C360698EF946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1D4BCF5-2D4B-4D43-AF82-C360698EF946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0962A71-B84A-4173-A833-AA60D97CF118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0962A71-B84A-4173-A833-AA60D97CF118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0962A71-B84A-4173-A833-AA60D97CF118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0962A71-B84A-4173-A833-AA60D97CF118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73CD913D-0DCF-47BE-AF5D-BC493B33FF8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73CD913D-0DCF-47BE-AF5D-BC493B33FF8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73CD913D-0DCF-47BE-AF5D-BC493B33FF8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73CD913D-0DCF-47BE-AF5D-BC493B33FF8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

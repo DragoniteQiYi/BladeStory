@@ -5,38 +5,47 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
+using MonoGame.Extended.ViewportAdapters;
+using System;
 
 namespace BladeStory
 {
-    public class Game1 : Game
+    public class MainGame : Game
     {
-        private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private TiledMap _map;
         private TiledMapRenderer _mapRenderer;
-        private IServiceCollection _services;
 
-        public Game1()
+        private readonly IServiceCollection _services;
+        private readonly GraphicsDeviceManager _graphics;
+        private BoxingViewportAdapter _viewportAdapter;
+
+        public MainGame(IServiceCollection services)
         {
+            _services = services;
             _graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-            // 配置依赖注入容器
-            _services = new ServiceCollection();
-            _services.AddGameServices();
-
-            // 设置窗口大小
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
-            _graphics.IsFullScreen = true;
-            _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+            // 注册 ViewportAdapter
+            _viewportAdapter = new BoxingViewportAdapter(
+                Window,
+                _graphics.GraphicsDevice,
+                640,
+                360
+            );
+            _services.AddSingleton(_viewportAdapter);
+
+            // 设置窗口大小
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.IsFullScreen = false;
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }

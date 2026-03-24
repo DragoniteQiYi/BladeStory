@@ -4,12 +4,17 @@ using Microsoft.Xna.Framework.Graphics;
 namespace BladeStory.Core
 {
     // 场景
-    public abstract class Scene
+    public class Scene
     {
         public List<GameObject> GameObjects { get; } = [];
 
-        public abstract void LoadContent();
-        public abstract void ReleaseContent();
+        public virtual void LoadContent() 
+        {
+            //foreach (var obj in GameObjects)
+            //    obj.LoadContent();
+        }
+
+        public virtual void ReleaseContent() { }
 
         public virtual void Update(GameTime gameTime)
         {

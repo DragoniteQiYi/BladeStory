@@ -6,7 +6,7 @@ namespace BladeStory.Core
     /// <summary>
     /// 通用的游戏场景对象
     /// </summary>
-    public class GameObject
+    public abstract class GameObject
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -22,8 +22,6 @@ namespace BladeStory.Core
         protected Rectangle _sourceRectangle;
         protected Vector2 _originalPosition;
 
-        protected List<GameObject> _children = [];
-
         public GameObject(Texture2D texture)
         {
             _texture = texture;
@@ -33,32 +31,10 @@ namespace BladeStory.Core
             }
         }
 
-        // 添加子对象
-        public void AddChild(GameObject child)
-        {
-            child.Parent = this;
-            _children.Add(child);
-        }
-
-        // 移除子对象
-        public void RemoveChild(GameObject child)
-        {
-            if (_children.Remove(child))
-            {
-                child.Parent = null;
-            }
-        }
-
         // 更新逻辑
         public virtual void Update(GameTime gameTime)
         {
             if (!IsActive) return;
-
-            // 更新子对象
-            foreach (var child in _children)
-            {
-                child.Update(gameTime);
-            }
         }
 
         // 渲染
@@ -80,12 +56,6 @@ namespace BladeStory.Core
                 SpriteEffects.None,
                 0f
             );
-
-            // 绘制子对象
-            foreach (var child in _children)
-            {
-                child.Draw(spriteBatch);
-            }
         }
 
         // 获取世界坐标（考虑父对象）
@@ -124,12 +94,6 @@ namespace BladeStory.Core
         // 清理资源
         public virtual void Destory()
         {
-            foreach (var child in _children)
-            {
-                child.Destory();
-            }
-            _children.Clear();
-
             if (_texture != null)
             {
                 _texture = null;
