@@ -80,6 +80,7 @@ namespace BladeStory.Service.Services
                 if (!PreviousKeyboardState.IsKeyDown(key))
                 {
                     OnKeyPressed(new KeyboardEventArgs(key, CurrentKeyboardState));
+                    Console.WriteLine($"[InputService]:{key}被按下");
                 }
             }
 
@@ -89,6 +90,7 @@ namespace BladeStory.Service.Services
                 if (!CurrentKeyboardState.IsKeyDown(key))
                 {
                     OnKeyReleased(new KeyboardEventArgs(key, CurrentKeyboardState));
+                    Console.WriteLine($"[InputService]:{key}被释放");
                 }
             }
         }

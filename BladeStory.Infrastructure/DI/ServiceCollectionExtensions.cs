@@ -27,7 +27,7 @@ namespace BladeStory.Infrastructure.DI
         /// <returns></returns>
         public static IServiceCollection AddGameServices(this IServiceCollection services)
         {
-            services.AddSingleton<IGameInputService, GameInputService>();
+            // services.AddSingleton<IGameInputService, GameInputService>();
             return services;
         }
     }

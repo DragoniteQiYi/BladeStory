@@ -1,25 +1,50 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BladeStory.Service.Interfaces;
+using BladeStory.Service.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.ViewportAdapters;
+using System;
+using System.Runtime.InteropServices;
 
 namespace BladeStory
 {
     public class MainGame : Game
     {
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
         private SpriteBatch _spriteBatch;
         private TiledMap _map;
         private TiledMapRenderer _mapRenderer;
 
+        // 基础服务
         private readonly IServiceCollection _services;
         private readonly GraphicsDeviceManager _graphics;
         private BoxingViewportAdapter _viewportAdapter;
 
+        // 系统服务
+        private IGameInputService _inputService;
+
         public MainGame(IServiceCollection services)
         {
+#if DEBUG
+            AllocConsole();
+            Console.WriteLine("MonoGame 控制台已启动 - 调试模式");
+#endif
             _services = services;
             _graphics = new GraphicsDeviceManager(this);
 
@@ -27,6 +52,11 @@ namespace BladeStory
             IsMouseVisible = true;
         }
 
+        /*
+         *  由于ViewportAdapter依赖Game
+         *  而GameInputService又依赖ViewportAdapter
+         *  所以它必须等游戏启动后再注册
+         */
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -38,6 +68,10 @@ namespace BladeStory
                 360
             );
             _services.AddSingleton(_viewportAdapter);
+
+            // 注册核心服务
+            _inputService = new GameInputService(_viewportAdapter);
+            _services.AddSingleton(_inputService);
 
             // 设置窗口大小
             _graphics.PreferredBackBufferWidth = 1280;
@@ -63,6 +97,7 @@ namespace BladeStory
                 Exit();
 
             // TODO: Add your update logic here
+            _inputService.Update(gameTime);
 
             base.Update(gameTime);
         }
