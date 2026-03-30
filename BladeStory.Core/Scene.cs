@@ -4,8 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 namespace BladeStory.Core
 {
     // 场景
-    public class Scene
+    public abstract class Scene(string id)
     {
+        public string Id { get; } = id;
+
         public List<GameObject> GameObjects { get; } = [];
 
         public virtual void LoadContent() 
@@ -14,7 +16,7 @@ namespace BladeStory.Core
             //    obj.LoadContent();
         }
 
-        public virtual void ReleaseContent() { }
+        public virtual void UnloadContent() { }
 
         public virtual void Update(GameTime gameTime)
         {

@@ -7,7 +7,7 @@ using MonoGame.Extended.ViewportAdapters;
 
 namespace BladeStory.Service.Services
 {
-    public class GameInputService : IGameInputService
+    public class InputManager : IInputManager
     {
         public KeyboardState CurrentKeyboardState { get; private set; }
         public KeyboardState PreviousKeyboardState { get; private set; }
@@ -27,9 +27,9 @@ namespace BladeStory.Service.Services
         private ViewportAdapter _viewportAdapter;
         private bool _disposed = false;
         private readonly Queue<Action> _eventQueue = new();
-        private readonly object _eventLock = new();
+        private readonly Lock _eventLock = new();
 
-        public GameInputService(ViewportAdapter viewportAdapter)
+        public InputManager(ViewportAdapter viewportAdapter)
         {
             _viewportAdapter = viewportAdapter ?? 
                 throw new ArgumentNullException(nameof(viewportAdapter));
@@ -80,7 +80,7 @@ namespace BladeStory.Service.Services
                 if (!PreviousKeyboardState.IsKeyDown(key))
                 {
                     OnKeyPressed(new KeyboardEventArgs(key, CurrentKeyboardState));
-                    Console.WriteLine($"[InputService]:{key}被按下");
+                    Console.WriteLine($"[InputManager]: 键盘{key}键被按下");
                 }
             }
 
@@ -90,7 +90,7 @@ namespace BladeStory.Service.Services
                 if (!CurrentKeyboardState.IsKeyDown(key))
                 {
                     OnKeyReleased(new KeyboardEventArgs(key, CurrentKeyboardState));
-                    Console.WriteLine($"[InputService]:{key}被释放");
+                    Console.WriteLine($"[InputManager]: 键盘{key}键被释放");
                 }
             }
         }
@@ -134,6 +134,7 @@ namespace BladeStory.Service.Services
                     PreviousMouseState,
                     CurrentMouseState);
                 OnMouseScrolled(args);
+                Console.WriteLine($"[InputManager]: 鼠标滚轮操作");
             }
         }
 
@@ -148,6 +149,7 @@ namespace BladeStory.Service.Services
                     CurrentMouseState,
                     button);
                 OnMouseButtonPressed(args);
+                Console.WriteLine($"[InputManager]: 鼠标{button}键被按下");
             }
             else if (current == ButtonState.Released && previous == ButtonState.Pressed)
             {
@@ -158,6 +160,7 @@ namespace BladeStory.Service.Services
                     CurrentMouseState,
                     button);
                 OnMouseButtonReleased(args);
+                Console.WriteLine($"[InputManager]: 鼠标{button}键被释放");
             }
         }
 

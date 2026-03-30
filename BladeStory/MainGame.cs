@@ -37,13 +37,15 @@ namespace BladeStory
         private BoxingViewportAdapter _viewportAdapter;
 
         // 系统服务
-        private IGameInputService _inputService;
+        private IInputManager _inputService;
+        private IAssetManager _assetManager;
+        private ISceneManager _sceneManager;
 
         public MainGame(IServiceCollection services)
         {
 #if DEBUG
             AllocConsole();
-            Console.WriteLine("MonoGame 控制台已启动 - 调试模式");
+            Console.WriteLine("[MainGame]: MonoGame 控制台已启动 - 调试模式");
 #endif
             _services = services;
             _graphics = new GraphicsDeviceManager(this);
@@ -69,9 +71,14 @@ namespace BladeStory
             );
             _services.AddSingleton(_viewportAdapter);
 
+            // 注册 ContentManager
+            _services.AddSingleton(Content);
+
             // 注册核心服务
-            _inputService = new GameInputService(_viewportAdapter);
+            _inputService = new InputManager(_viewportAdapter);
             _services.AddSingleton(_inputService);
+            _assetManager = new AssetManager(Content);
+            _services.AddSingleton(_assetManager);
 
             // 设置窗口大小
             _graphics.PreferredBackBufferWidth = 1280;
@@ -93,7 +100,8 @@ namespace BladeStory
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed 
+                || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here

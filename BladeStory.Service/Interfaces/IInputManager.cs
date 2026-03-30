@@ -6,7 +6,7 @@ using MonoGame.Extended.ViewportAdapters;
 
 namespace BladeStory.Service.Interfaces
 {
-    public interface IGameInputService
+    public interface IInputManager
     {
         // 键盘事件
         event EventHandler<KeyboardEventArgs> KeyPressed;
@@ -25,8 +25,8 @@ namespace BladeStory.Service.Interfaces
         MouseState CurrentMouseState { get; }
         MouseState PreviousMouseState { get; }
 
-        public TimeSpan CurrentTime { get; set; }
-        public ViewportAdapter ViewportAdapter { get; }
+        TimeSpan CurrentTime { get; set; }
+        ViewportAdapter ViewportAdapter { get; }
 
         // 工具方法
         void Update(GameTime gameTime);

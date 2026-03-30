@@ -11,5 +11,9 @@ namespace BladeStory.Core.Scenes
     {
         private TiledMap _tiledMap;
 
+        public TileBasedScene(string id) : base(id)
+        {
+            
+        }
     }
 }

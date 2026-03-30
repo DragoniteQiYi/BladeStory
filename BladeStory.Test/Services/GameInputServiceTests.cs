@@ -12,13 +12,13 @@ namespace BladeStory.Test.Services
 {
     public class GameInputServiceTests
     {
-        private readonly Mock<IGameInputService> _mockInputService;
+        private readonly Mock<IInputManager> _mockInputService;
         private readonly GameInputConsumer _consumer;
         private readonly Mock<ViewportAdapter> _mockViewportAdapter;
 
         public GameInputServiceTests()
         {
-            _mockInputService = new Mock<IGameInputService>();
+            _mockInputService = new Mock<IInputManager>();
             _consumer = new GameInputConsumer(_mockInputService.Object);
         }
 

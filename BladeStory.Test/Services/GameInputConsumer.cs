@@ -8,9 +8,9 @@ namespace BladeStory.Test.Services
 {
     public class GameInputConsumer
     {
-        private readonly IGameInputService _inputService;
+        private readonly IInputManager _inputService;
 
-        public GameInputConsumer(IGameInputService inputService) 
+        public GameInputConsumer(IInputManager inputService) 
         {
             _inputService = inputService;
         }
