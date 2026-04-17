@@ -1,4 +1,4 @@
-﻿using BladeStory.Core;
+﻿using BladeStory.Core.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,11 +11,13 @@ namespace BladeStory.Service.Interfaces
         event Action<Scene> OnSceneLoaded;
         event Action<Scene> OnSceneUnloaded;
 
-        /// <summary>
-        /// 加载场景
-        /// </summary>
-        /// <param name="scene"></param>
+        void LoadSceneConfigs();
+
+        void LoadScene(string sceneId);
+
         void LoadScene(Scene scene);
+
+        void LoadSceneAsync(string sceneId, Action<Scene> onComplete);
 
         void LoadSceneAsync(Scene scene, Action<Scene> onComplete);
 

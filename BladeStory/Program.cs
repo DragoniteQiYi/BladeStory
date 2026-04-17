@@ -21,9 +21,6 @@ namespace BladeStory
             // 2. 注册配置服务
             services.AddConfigurations();
 
-            // 3. 注册游戏服务
-            services.AddGameServices();
-
             using var serviceProvider = services.BuildServiceProvider();
             using var game = serviceProvider.GetRequiredService<MainGame>();
             game.Run();

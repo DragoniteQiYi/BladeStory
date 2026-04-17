@@ -1,11 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BladeStory.Configuration;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BladeStory.Core
+namespace BladeStory.Core.Scenes
 {
     // 场景
-    public abstract class Scene(string id)
+    public abstract class Scene(string id, SceneConfig sceneConfig)
     {
+        protected readonly SceneConfig _sceneConfig = sceneConfig;
+
         public string Id { get; } = id;
 
         public List<GameObject> GameObjects { get; } = [];

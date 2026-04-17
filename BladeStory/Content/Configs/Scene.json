@@ -1,0 +1,12 @@
+{
+  "Scenes/Town/Original": {
+    "id": "Scenes/Town/Original",
+    "tileMap": "Maps/Town/Original",
+    "bgm": null
+  },
+  "Scenes/Town/Central": {
+    "id": "Scenes/Town/Central",
+    "tileMap": "Maps/Town/Central",
+    "bgm": null
+  }
+}

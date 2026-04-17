@@ -3,10 +3,10 @@
     [Serializable]
     public class SceneConfig
     {
-        public required string SceneId {  get; set; }
+        public required string Id {  get; set; }
 
-        public string? TiledMapId { get; set; }
+        public string? TiledMap { get; set; }
         
-        public string? BgmId { get; set; }
+        public string? Bgm { get; set; }
     }
 }

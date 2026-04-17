@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BladeStory.Configuration\BladeStory.Configuration.csproj" />
     <ProjectReference Include="..\BladeStory.Core\BladeStory.Core.csproj" />
+    <ProjectReference Include="..\BladeStory.Utility\BladeStory.Utility.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using BladeStory.Service.Interfaces;
+﻿using BladeStory.Infrastructure.DI;
+using BladeStory.Service.Interfaces;
 using BladeStory.Service.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
@@ -40,6 +41,7 @@ namespace BladeStory
         private IInputManager _inputService;
         private IAssetManager _assetManager;
         private ISceneManager _sceneManager;
+        private IConfigManager _configManager;
 
         public MainGame(IServiceCollection services)
         {
@@ -74,11 +76,8 @@ namespace BladeStory
             // 注册 ContentManager
             _services.AddSingleton(Content);
 
-            // 注册核心服务
-            _inputService = new InputManager(_viewportAdapter);
-            _services.AddSingleton(_inputService);
-            _assetManager = new AssetManager(Content);
-            _services.AddSingleton(_assetManager);
+            // 注册游戏核心服务
+            _services.AddGameServices();
 
             // 设置窗口大小
             _graphics.PreferredBackBufferWidth = 1280;
@@ -94,6 +93,7 @@ namespace BladeStory
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            _sceneManager.LoadSceneConfigs();
             _map = Content.Load<TiledMap>("Maps/Town/OriginalTown");
             _mapRenderer = new(GraphicsDevice, _map);
         }

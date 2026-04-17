@@ -2,6 +2,6 @@
 {
     public interface IConfigManager
     {
-        T LoadConfg<T>(string configPath);
+        Task<T> LoadConfig<T>(string configPath) where T : class, new();
     }
 }

@@ -20,10 +20,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Data", "BladeStory.Data\BladeStory.Data.csproj", "{B1D4BCF5-2D4B-4D43-AF82-C360698EF946}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Core", "BladeStory.Core\BladeStory.Core.csproj", "{C0962A71-B84A-4173-A833-AA60D97CF118}"
+	ProjectSection(ProjectDependencies) = postProject
+		{10514CAC-3000-4C8B-9C3F-5B85D5D9FD43} = {10514CAC-3000-4C8B-9C3F-5B85D5D9FD43}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Gameplay", "BladeStory.Gameplay\BladeStory.Gameplay.csproj", "{73CD913D-0DCF-47BE-AF5D-BC493B33FF8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Test", "BladeStory.Test\BladeStory.Test.csproj", "{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Utility", "BladeStory.Utility\BladeStory.Utility.csproj", "{7A8F9204-19DD-4062-AA6C-0424FF454DB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +68,10 @@ Global
 		{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A8F9204-19DD-4062-AA6C-0424FF454DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A8F9204-19DD-4062-AA6C-0424FF454DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A8F9204-19DD-4062-AA6C-0424FF454DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A8F9204-19DD-4062-AA6C-0424FF454DB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿using BladeStory.Service.Interfaces;
+using BladeStory.Utility;
 using Microsoft.Xna.Framework.Content;
-using System.Text.Json;
 
 namespace BladeStory.Service.Services
 {
@@ -8,34 +8,46 @@ namespace BladeStory.Service.Services
     {
         private readonly ContentManager _contentManager;
 
-        private const string CONFIG_PATH = "Configs/";
+        private static readonly string BASE_PATH
+            = AppDomain.CurrentDomain.BaseDirectory;
 
         public ConfigManager(ContentManager contentManager) 
         {
             _contentManager = contentManager; 
         }
 
-        public T LoadConfig<T>(string configPath) where T : class, new()
+        public async Task<T> LoadConfig<T>(string configPath) 
+            where T : class, new()
         {
 #if DEBUG
-            return LoadFromJson<T>(configPath);
+            var configs = await LoadFromJson<T>(configPath);
+            return configs;
 #else
-
+            
 #endif
         }
 
         /// <summary>
         /// 开发模式：直接读取JSON文件
         /// </summary>
-        private T LoadFromJson<T>(string configPath) where T : class, new()
+        private async Task<T?> LoadFromJson<T>(string configPath) 
+            where T : class, new()
         {
             try
             {
-                
+                var path = Path.Combine(BASE_PATH, configPath);
+                if (!File.Exists(path))
+                {
+                    Console.WriteLine("ERROR-[ConfigManager]: 目标配置文件不存在");
+                    return null;
+                }
+                using var stream = File.OpenRead(path);
+                return await JsonHelper.DeserializeFromStreamAsync<T>(stream);
             }
-            catch 
+            catch(Exception e)
             {
-
+                Console.WriteLine("ERROR-[ConfigManager]: 读取配置文件失败");
+                throw new Exception(e.Message);
             }
         }
     }
