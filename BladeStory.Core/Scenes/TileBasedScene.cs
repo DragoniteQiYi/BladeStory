@@ -3,28 +3,20 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Renderers;
 
 namespace BladeStory.Core.Scenes
 {
-    public class TileBasedScene : Scene
+    public class TileBasedScene(SceneConfig sceneConfig) : Scene(sceneConfig)
     {
         private TiledMap? _tiledMap;
 
-        private readonly ContentManager _contentManager;
-
-        public TileBasedScene(string id,
-            SceneConfig sceneConfig,
-            ContentManager contentManager) : base(id, sceneConfig)
+        public override void LoadContent(ContentManager contentManager)
         {
-            _contentManager = contentManager;
-        }
-
-        public override void LoadContent()
-        {
-            _tiledMap = _contentManager
+            _tiledMap = contentManager
                 .Load<TiledMap>(_sceneConfig.TiledMap);
 
-            base.LoadContent();
+            base.LoadContent(contentManager);
         }
 
         public override void UnloadContent()

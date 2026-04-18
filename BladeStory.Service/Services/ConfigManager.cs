@@ -13,7 +13,9 @@ namespace BladeStory.Service.Services
 
         public ConfigManager(ContentManager contentManager) 
         {
-            _contentManager = contentManager; 
+            _contentManager = contentManager;
+
+            Console.WriteLine($"[ConfigManager]: 配置管理模块初始化成功");
         }
 
         public async Task<T> LoadConfig<T>(string configPath) 
@@ -46,7 +48,7 @@ namespace BladeStory.Service.Services
             }
             catch(Exception e)
             {
-                Console.WriteLine("ERROR-[ConfigManager]: 读取配置文件失败");
+                Console.WriteLine("ERROR-[ConfigManager]: 读取配置文件失败 " + e.Message);
                 throw new Exception(e.Message);
             }
         }

@@ -1,9 +1,13 @@
-﻿namespace BladeStory.Configuration
+﻿using BladeStory.Constant;
+
+namespace BladeStory.Configuration
 {
     [Serializable]
     public class SceneConfig
     {
         public required string Id {  get; set; }
+
+        public SceneType Type { get; set; }
 
         public string? TiledMap { get; set; }
         

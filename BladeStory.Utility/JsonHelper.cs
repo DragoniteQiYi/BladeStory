@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace BladeStory.Utility
 {
@@ -8,7 +9,10 @@ namespace BladeStory.Utility
         private static readonly JsonSerializerOptions DefaultOptions = new()
         {
             PropertyNameCaseInsensitive = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = {
+                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) // 👈 允许驼峰/小写匹配
+            }
         };
 
         /// <summary>

@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BladeStory.Constant\BladeStory.Constant.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,6 +1,7 @@
 ﻿using BladeStory.Infrastructure.DI;
 using BladeStory.Service.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Xna.Framework;
 using System;
 
 namespace BladeStory
@@ -12,17 +13,14 @@ namespace BladeStory
         {
             var services = new ServiceCollection();
 
+            using var game = new MainGame(services);
+
             // 1. 注册游戏实例
-            services.AddSingleton(sp =>
-            {
-                return new MainGame(services);
-            });
+            services.AddSingleton<Game>(game);
 
             // 2. 注册配置服务
             services.AddConfigurations();
 
-            using var serviceProvider = services.BuildServiceProvider();
-            using var game = serviceProvider.GetRequiredService<MainGame>();
             game.Run();
         }
     }

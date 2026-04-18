@@ -35,13 +35,12 @@ namespace BladeStory
         // 基础服务
         private readonly IServiceCollection _services;
         private readonly GraphicsDeviceManager _graphics;
+        private IServiceProvider _serviceProvider;
         private BoxingViewportAdapter _viewportAdapter;
 
         // 系统服务
-        private IInputManager _inputService;
-        private IAssetManager _assetManager;
+        private IInputManager _inputManager;
         private ISceneManager _sceneManager;
-        private IConfigManager _configManager;
 
         public MainGame(IServiceCollection services)
         {
@@ -71,13 +70,24 @@ namespace BladeStory
                 640,
                 360
             );
-            _services.AddSingleton(_viewportAdapter);
+            _services.AddSingleton<ViewportAdapter>(_viewportAdapter);
+
+            // 注册 GraphicsDevice
+            _services.AddSingleton(GraphicsDevice);
 
             // 注册 ContentManager
             _services.AddSingleton(Content);
 
             // 注册游戏核心服务
+            _services.AddCoreServices();
             _services.AddGameServices();
+
+            // 构建服务
+            _serviceProvider = _services.BuildServiceProvider();
+
+            // 获取必要服务
+            _sceneManager = _serviceProvider.GetService<ISceneManager>();
+            _inputManager = _serviceProvider.GetService<IInputManager>();
 
             // 设置窗口大小
             _graphics.PreferredBackBufferWidth = 1280;
@@ -105,7 +115,7 @@ namespace BladeStory
                 Exit();
 
             // TODO: Add your update logic here
-            _inputService.Update(gameTime);
+            _inputManager.Update(gameTime);
 
             base.Update(gameTime);
         }

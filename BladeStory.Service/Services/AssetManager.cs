@@ -17,6 +17,8 @@ namespace BladeStory.Service.Services
         public AssetManager(ContentManager contentManager) 
         {
             _contentManager = contentManager;
+
+            Console.WriteLine($"[AssetManager]: 资源管理模块初始化成功");
         }
 
         public Song GetSong(string id)

@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Test", "BladeSto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Utility", "BladeStory.Utility\BladeStory.Utility.csproj", "{7A8F9204-19DD-4062-AA6C-0424FF454DB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Constant", "BladeStory.Constant\BladeStory.Constant.csproj", "{193D5266-219C-4F15-A401-6D579513DA1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{7A8F9204-19DD-4062-AA6C-0424FF454DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A8F9204-19DD-4062-AA6C-0424FF454DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A8F9204-19DD-4062-AA6C-0424FF454DB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{193D5266-219C-4F15-A401-6D579513DA1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{193D5266-219C-4F15-A401-6D579513DA1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{193D5266-219C-4F15-A401-6D579513DA1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{193D5266-219C-4F15-A401-6D579513DA1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

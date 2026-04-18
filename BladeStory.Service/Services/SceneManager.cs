@@ -2,27 +2,37 @@
 using BladeStory.Core.Scenes;
 using BladeStory.Service.Interfaces;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Tiled.Renderers;
 
 namespace BladeStory.Service.Services
 {
     public class SceneManager : ISceneManager
     {
         private readonly IConfigManager _configManager;
+        private readonly ContentManager _contentManager;
+        private readonly TiledMapRenderer _tiledMapRender;
 
-        public Scene CurrentScene => _currentScene;
+        public Scene? CurrentScene => _currentScene;
 
         public event Action<Scene>? OnSceneLoaded;
         public event Action<Scene>? OnSceneUnloaded;
 
-        private Scene _currentScene;
+        private Scene? _currentScene;
         private bool _isTransitioning;
         private Dictionary<string, Scene> _scenes = [];
         private Dictionary<string, SceneConfig> _sceneConfigs = [];
 
-        public SceneManager(IConfigManager configManager)
+        public SceneManager(IConfigManager configManager,
+            ContentManager contentManager,
+            TiledMapRenderer tiledMapRenderer)
         {
             _configManager = configManager;
+            _contentManager = contentManager;
+            _tiledMapRender = tiledMapRenderer;
+
+            Console.WriteLine($"[SceneManager]: 场景管理模块初始化成功");
         }
 
         public void LoadSceneConfigs()
@@ -50,9 +60,8 @@ namespace BladeStory.Service.Services
         public void LoadScene(Scene scene)
         {
             _currentScene?.UnloadContent();
-
             _currentScene = scene;
-            _currentScene?.LoadContent();
+            _currentScene?.LoadContent(_contentManager);
         }
 
         public void LoadSceneAsync(string sceneId, Action<Scene> onComplete)

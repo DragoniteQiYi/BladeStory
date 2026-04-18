@@ -1,19 +1,20 @@
 ﻿using BladeStory.Configuration;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BladeStory.Core.Scenes
 {
     // 场景
-    public abstract class Scene(string id, SceneConfig sceneConfig)
+    public abstract class Scene(SceneConfig sceneConfig)
     {
         protected readonly SceneConfig _sceneConfig = sceneConfig;
 
-        public string Id { get; } = id;
+        public string Id { get; } = sceneConfig.Id;
 
         public List<GameObject> GameObjects { get; } = [];
 
-        public virtual void LoadContent() 
+        public virtual void LoadContent(ContentManager contentManager) 
         {
             //foreach (var obj in GameObjects)
             //    obj.LoadContent();

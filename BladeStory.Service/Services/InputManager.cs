@@ -33,6 +33,8 @@ namespace BladeStory.Service.Services
         {
             _viewportAdapter = viewportAdapter ?? 
                 throw new ArgumentNullException(nameof(viewportAdapter));
+
+            Console.WriteLine($"[InputManager]: 输入管理模块初始化成功");
         }
 
         public void Update(GameTime gameTime)

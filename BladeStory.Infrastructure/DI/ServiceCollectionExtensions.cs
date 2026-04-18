@@ -2,13 +2,27 @@
 using BladeStory.Service.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.ViewportAdapters;
 
 namespace BladeStory.Infrastructure.DI
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddCoreServices(this IServiceCollection services)
+        {
+            services.AddSingleton(sp =>
+            {
+                var graphicsDevice = sp.GetRequiredService<GraphicsDevice>();
+                return new TiledMapRenderer(graphicsDevice);
+            });
+
+            return services;
+        }
+
         public static IServiceCollection AddConfigurations(this IServiceCollection services)
         {
             // 创建 Configuration
@@ -29,26 +43,28 @@ namespace BladeStory.Infrastructure.DI
         /// <returns></returns>
         public static IServiceCollection AddGameServices(this IServiceCollection services)
         {
-            services.AddSingleton<ISceneManager, SceneManager>();
-            services.AddSingleton(sp =>
+            services.AddSingleton<IInputManager>(sp =>
             {
                 var viewportAdapter = sp.GetRequiredService<ViewportAdapter>();
                 return new InputManager(viewportAdapter);
             });
-            services.AddSingleton(sp =>
+            services.AddSingleton<IAssetManager>(sp =>
             {
                 var contentManager = sp.GetRequiredService<ContentManager>();
+                Console.WriteLine("就你成事不足败事有余！！！");
                 return new AssetManager(contentManager);
             });
-            services.AddSingleton(sp =>
+            services.AddSingleton<IConfigManager>(sp =>
             {
                 var contentManager = sp.GetRequiredService<ContentManager>();
                 return new ConfigManager(contentManager);
             });
-            services.AddSingleton(sp =>
+            services.AddSingleton<ISceneManager>(sp =>
             {
-                var configManager = sp.GetRequiredService<ConfigManager>();
-                return new SceneManager(configManager);
+                var configManager = sp.GetRequiredService<IConfigManager>();
+                var contentManager = sp.GetRequiredService<ContentManager>();
+                var tiledMapRenderer = sp.GetRequiredService<TiledMapRenderer>();
+                return new SceneManager(configManager, contentManager, tiledMapRenderer);
             });
 
             return services;
