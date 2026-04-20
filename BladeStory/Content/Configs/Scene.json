@@ -2,13 +2,13 @@
   "Scenes/Town/Original": {
     "id": "Scenes/Town/Original",
     "type": "tiled",
-    "tileMap": "Maps/Town/Original",
+    "tiledMap": "Maps/Town/OriginalTown",
     "bgm": null
   },
   "Scenes/Town/Central": {
     "id": "Scenes/Town/Central",
     "type": "tiled",
-    "tileMap": "Maps/Town/Central",
+    "tiledMap": "Maps/Town/Central",
     "bgm": null
   }
 }

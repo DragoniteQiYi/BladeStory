@@ -7,15 +7,24 @@ using MonoGame.Extended.Tiled.Renderers;
 
 namespace BladeStory.Core.Scenes
 {
-    public class TileBasedScene(SceneConfig sceneConfig) : Scene(sceneConfig)
+    public class TileBasedScene : Scene
     {
-        private TiledMap? _tiledMap;
+        private TiledMap _tiledMap;
+        private readonly TiledMapRenderer _tiledMapRenderer;
+
+        public TileBasedScene(SceneConfig sceneConfig,
+            TiledMap tiledMap,
+            TiledMapRenderer tiledMapRenderer) : base(sceneConfig)
+        {
+            _tiledMapRenderer = tiledMapRenderer;
+            _tiledMap = tiledMap;
+        }
 
         public override void LoadContent(ContentManager contentManager)
         {
-            _tiledMap = contentManager
-                .Load<TiledMap>(_sceneConfig.TiledMap);
-
+            //_tiledMap = contentManager
+            //    .Load<TiledMap>(_sceneConfig.TiledMap);
+            
             base.LoadContent(contentManager);
         }
 
@@ -26,6 +35,11 @@ namespace BladeStory.Core.Scenes
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (_tiledMap != null)
+            {
+                _tiledMapRenderer?.Draw();
+            }
+
             base.Draw(spriteBatch);
         }
 

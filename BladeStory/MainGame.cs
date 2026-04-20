@@ -1,12 +1,10 @@
 ﻿using BladeStory.Infrastructure.DI;
 using BladeStory.Service.Interfaces;
-using BladeStory.Service.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Tiled.Renderers;
 using MonoGame.Extended.ViewportAdapters;
 using System;
 using System.Runtime.InteropServices;
@@ -30,7 +28,6 @@ namespace BladeStory
 
         private SpriteBatch _spriteBatch;
         private TiledMap _map;
-        private TiledMapRenderer _mapRenderer;
 
         // 基础服务
         private readonly IServiceCollection _services;
@@ -63,6 +60,12 @@ namespace BladeStory
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            // 设置窗口大小
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.IsFullScreen = false;
+            _graphics.ApplyChanges();
+
             // 注册 ViewportAdapter
             _viewportAdapter = new BoxingViewportAdapter(
                 Window,
@@ -80,6 +83,7 @@ namespace BladeStory
 
             // 注册游戏核心服务
             _services.AddCoreServices();
+            _services.AddFactories();
             _services.AddGameServices();
 
             // 构建服务
@@ -88,12 +92,6 @@ namespace BladeStory
             // 获取必要服务
             _sceneManager = _serviceProvider.GetService<ISceneManager>();
             _inputManager = _serviceProvider.GetService<IInputManager>();
-
-            // 设置窗口大小
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
-            _graphics.IsFullScreen = false;
-            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -104,8 +102,8 @@ namespace BladeStory
 
             // TODO: use this.Content to load your game content here
             _sceneManager.LoadSceneConfigs();
-            _map = Content.Load<TiledMap>("Maps/Town/OriginalTown");
-            _mapRenderer = new(GraphicsDevice, _map);
+            _sceneManager.LoadScene("Scenes/Town/Original");
+            // _mapRenderer = new(GraphicsDevice, _map);
         }
 
         protected override void Update(GameTime gameTime)
@@ -125,7 +123,8 @@ namespace BladeStory
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            _mapRenderer.Draw();
+            _sceneManager.Draw(_spriteBatch);
+            // _mapRenderer.Draw();
 
             base.Draw(gameTime);
         }

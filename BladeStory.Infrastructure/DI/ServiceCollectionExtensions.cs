@@ -1,8 +1,8 @@
-﻿using BladeStory.Service.Interfaces;
+﻿using BladeStory.Service.Factories;
+using BladeStory.Service.Interfaces;
 using BladeStory.Service.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled.Renderers;
@@ -28,7 +28,7 @@ namespace BladeStory.Infrastructure.DI
             // 创建 Configuration
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("GameSettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("GameSettings.json", optional: false, reloadOnChange: false)
                 .AddEnvironmentVariables()
                 .Build();
             services.AddSingleton<IConfiguration>(configuration);
@@ -51,7 +51,6 @@ namespace BladeStory.Infrastructure.DI
             services.AddSingleton<IAssetManager>(sp =>
             {
                 var contentManager = sp.GetRequiredService<ContentManager>();
-                Console.WriteLine("就你成事不足败事有余！！！");
                 return new AssetManager(contentManager);
             });
             services.AddSingleton<IConfigManager>(sp =>
@@ -63,8 +62,26 @@ namespace BladeStory.Infrastructure.DI
             {
                 var configManager = sp.GetRequiredService<IConfigManager>();
                 var contentManager = sp.GetRequiredService<ContentManager>();
-                var tiledMapRenderer = sp.GetRequiredService<TiledMapRenderer>();
-                return new SceneManager(configManager, contentManager, tiledMapRenderer);
+                var sceneFactory = sp.GetRequiredService<ISceneFactory>();
+                var tiledMapRendererFactory = sp.GetRequiredService<ITiledMapRendererFactory>();
+                return new SceneManager(configManager, contentManager, sceneFactory, tiledMapRendererFactory);
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddFactories(this IServiceCollection services)
+        {
+            services.AddSingleton<ITiledMapRendererFactory>(sp =>
+            {
+                var graphicsDevice = sp.GetRequiredService<GraphicsDevice>();
+                return new TiledMapRendererFactory(graphicsDevice);
+            });
+            services.AddSingleton<ISceneFactory>(sp =>
+            {
+                var graphicsDevice = sp.GetRequiredService<GraphicsDevice>();
+                var tiledMapRendererFactory = sp.GetRequiredService<ITiledMapRendererFactory>();
+                return new SceneFactory(graphicsDevice, tiledMapRendererFactory);
             });
 
             return services;

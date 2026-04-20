@@ -2,21 +2,22 @@
 using BladeStory.Constant;
 using BladeStory.Core.Scenes;
 using BladeStory.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Tiled;
 
 namespace BladeStory.Service.Factories
 {
-    public class SceneFactory : ISceneFactory
+    public class SceneFactory(GraphicsDevice graphicsDevice, 
+        ITiledMapRendererFactory tiledMapRendererFactory) : ISceneFactory
     {
-        public Scene CreateScene(SceneConfig sceneConfig)
+        private readonly ITiledMapRendererFactory _tiledMapRendererFactory = tiledMapRendererFactory;
+
+        public Scene CreateTiledScene(SceneConfig sceneConfig, TiledMap tiledMap)
         {
             if (sceneConfig.Type == SceneType.Tiled)
             {
-                return new TileBasedScene(sceneConfig);
+                var tiledMapRenderer = tiledMapRendererFactory.CreateTiledMapRenderer(tiledMap);
+                return new TileBasedScene(sceneConfig, tiledMap, tiledMapRenderer);
             }
             else
             {

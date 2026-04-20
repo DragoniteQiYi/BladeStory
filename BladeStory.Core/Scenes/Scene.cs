@@ -30,6 +30,7 @@ namespace BladeStory.Core.Scenes
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+
             foreach (var obj in GameObjects)
                 obj.Draw(spriteBatch);
         }
