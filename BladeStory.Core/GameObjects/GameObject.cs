@@ -9,7 +9,7 @@ namespace BladeStory.Core.GameObjects
     /// <summary>
     /// 通用的游戏场景对象
     /// </summary>
-    public abstract class GameObject
+    public class GameObject
     {
         // -----标识-----
         public Guid Id { get; set; }
@@ -63,7 +63,7 @@ namespace BladeStory.Core.GameObjects
 
             foreach (var child in Children)
             {
-                child.Update(gameTime);
+                child?.Update(gameTime);
             }
         }
 
@@ -71,12 +71,12 @@ namespace BladeStory.Core.GameObjects
         {
             if (!IsActive || !IsVisible) return;
             // 同步变换到 Sprite
-
-            spriteBatch.Draw(_sprite, _transform.Position);
             foreach (var child in Children)
             {
-                child.Draw(spriteBatch);
+                child?.Draw(spriteBatch);
             }
+
+            spriteBatch.Draw(_sprite, _transform.Position);
         }
 
         public Vector2 GetWorldPosition()
