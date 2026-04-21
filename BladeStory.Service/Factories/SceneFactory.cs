@@ -7,8 +7,7 @@ using MonoGame.Extended.Tiled;
 
 namespace BladeStory.Service.Factories
 {
-    public class SceneFactory(GraphicsDevice graphicsDevice, 
-        ITiledMapRendererFactory tiledMapRendererFactory) : ISceneFactory
+    public class SceneFactory(ITiledMapRendererFactory tiledMapRendererFactory) : ISceneFactory
     {
         private readonly ITiledMapRendererFactory _tiledMapRendererFactory = tiledMapRendererFactory;
 
@@ -17,7 +16,7 @@ namespace BladeStory.Service.Factories
             if (sceneConfig.Type == SceneType.Tiled)
             {
                 var tiledMapRenderer = tiledMapRendererFactory.CreateTiledMapRenderer(tiledMap);
-                return new TileBasedScene(sceneConfig, tiledMap, tiledMapRenderer);
+                return new TiledScene(sceneConfig, tiledMap, tiledMapRenderer);
             }
             else
             {

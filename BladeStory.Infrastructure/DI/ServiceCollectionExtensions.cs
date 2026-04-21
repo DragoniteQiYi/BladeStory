@@ -79,9 +79,8 @@ namespace BladeStory.Infrastructure.DI
             });
             services.AddSingleton<ISceneFactory>(sp =>
             {
-                var graphicsDevice = sp.GetRequiredService<GraphicsDevice>();
                 var tiledMapRendererFactory = sp.GetRequiredService<ITiledMapRendererFactory>();
-                return new SceneFactory(graphicsDevice, tiledMapRendererFactory);
+                return new SceneFactory(tiledMapRendererFactory);
             });
 
             return services;

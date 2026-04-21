@@ -16,12 +16,11 @@ namespace BladeStory.Service.Services
         private readonly ISceneFactory _sceneFactory;
         private readonly ITiledMapRendererFactory _tiledMapRendererFactory;
 
-        public Scene? CurrentScene => _currentScene;
+        public Scene? CurrentScene { get; private set; }
 
         public event Action<Scene>? OnSceneLoaded;
         public event Action<Scene>? OnSceneUnloaded;
 
-        private Scene? _currentScene;
         private bool _isTransitioning;
         private Dictionary<string, Scene> _scenes = [];
         private Dictionary<string, SceneConfig> _sceneConfigs = [];
@@ -57,7 +56,7 @@ namespace BladeStory.Service.Services
 
         public void LoadScene(string sceneId)
         {
-            _currentScene?.UnloadContent();
+            CurrentScene?.UnloadContent();
 
             var sceneConfig = _sceneConfigs[sceneId];
             var type = _sceneConfigs[sceneId].Type;
@@ -67,17 +66,19 @@ namespace BladeStory.Service.Services
             if (type == SceneType.Tiled)
             {
                 map = _contentManager.Load<TiledMap>(tiledMapId);
-                _currentScene = _sceneFactory.CreateTiledScene(sceneConfig, map);
+                CurrentScene = _sceneFactory.CreateTiledScene(sceneConfig, map);
             }
 
-            _currentScene.LoadContent(_contentManager);
+            CurrentScene?.LoadContent(_contentManager);
+            OnSceneLoaded?.Invoke(CurrentScene);
         }
 
         public void LoadScene(Scene scene)
         {
-            _currentScene?.UnloadContent();
-            _currentScene = scene;
-            _currentScene?.LoadContent(_contentManager);
+            CurrentScene?.UnloadContent();
+            CurrentScene = scene;
+            CurrentScene?.LoadContent(_contentManager);
+            OnSceneLoaded?.Invoke(CurrentScene);
         }
 
         public void LoadSceneAsync(string sceneId, Action<Scene> onComplete)
@@ -92,12 +93,12 @@ namespace BladeStory.Service.Services
 
         public void Update(GameTime gameTime)
         {
-            _currentScene?.Update(gameTime);
+            CurrentScene?.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            _currentScene?.Draw(spriteBatch);
+            CurrentScene?.Draw(spriteBatch);
         }
     }
 }

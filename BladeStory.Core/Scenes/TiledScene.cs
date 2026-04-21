@@ -7,12 +7,12 @@ using MonoGame.Extended.Tiled.Renderers;
 
 namespace BladeStory.Core.Scenes
 {
-    public class TileBasedScene : Scene
+    public class TiledScene : Scene
     {
         private TiledMap _tiledMap;
         private readonly TiledMapRenderer _tiledMapRenderer;
 
-        public TileBasedScene(SceneConfig sceneConfig,
+        public TiledScene(SceneConfig sceneConfig,
             TiledMap tiledMap,
             TiledMapRenderer tiledMapRenderer) : base(sceneConfig)
         {

@@ -1,4 +1,5 @@
 ﻿using BladeStory.Configuration;
+using BladeStory.Core.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
