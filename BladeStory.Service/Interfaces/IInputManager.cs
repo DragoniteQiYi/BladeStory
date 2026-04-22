@@ -28,6 +28,8 @@ namespace BladeStory.Service.Interfaces
         TimeSpan CurrentTime { get; set; }
         ViewportAdapter ViewportAdapter { get; }
 
+        bool IsEnabled { get; set; }
+
         // 工具方法
         void Update(GameTime gameTime);
         Vector2 GetMousePosition();

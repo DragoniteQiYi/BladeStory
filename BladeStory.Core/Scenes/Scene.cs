@@ -17,8 +17,8 @@ namespace BladeStory.Core.Scenes
 
         public virtual void LoadContent(ContentManager contentManager) 
         {
-            //foreach (var obj in GameObjects)
-            //    obj.LoadContent();
+            foreach (var obj in GameObjects)
+                obj.LoadContent();
         }
 
         public virtual void UnloadContent() { }

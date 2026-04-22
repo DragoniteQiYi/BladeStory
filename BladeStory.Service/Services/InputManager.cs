@@ -14,6 +14,7 @@ namespace BladeStory.Service.Services
         public MouseState CurrentMouseState { get; private set; }
         public MouseState PreviousMouseState { get; private set; }
         public TimeSpan CurrentTime { get; set; }
+        public bool IsEnabled { get; set; } = true;
         public ViewportAdapter ViewportAdapter => _viewportAdapter;
 
         public event EventHandler<KeyboardEventArgs>? KeyPressed;
@@ -22,7 +23,7 @@ namespace BladeStory.Service.Services
         public event EventHandler<MouseEventArgs>? MouseButtonPressed;
         public event EventHandler<MouseEventArgs>? MouseButtonReleased;
         public event EventHandler<MouseEventArgs>? MouseScrolled;
-        public event EventHandler<TextInputEventArgs>? TextInput;
+        public event EventHandler<TextInputEventArgs>? TextInput; // 没有需求，暂不实现
 
         private ViewportAdapter _viewportAdapter;
         private bool _disposed = false;
@@ -49,9 +50,10 @@ namespace BladeStory.Service.Services
             CurrentKeyboardState = Keyboard.GetState();
             CurrentMouseState = Mouse.GetState();
 
+            if (!IsEnabled) return;
+
             // 处理键盘事件
             ProcessKeyboardEvents();
-
             // 处理鼠标事件
             ProcessMouseEvents();
 
@@ -73,26 +75,32 @@ namespace BladeStory.Service.Services
 
         private void ProcessKeyboardEvents()
         {
-            Keys[] pressedKeys = CurrentKeyboardState.GetPressedKeys();
-            Keys[] previousPressedKeys = PreviousKeyboardState.GetPressedKeys();
+            var pressedKeys = CurrentKeyboardState.GetPressedKeys();
+            var previousKeys = PreviousKeyboardState.GetPressedKeys();
 
             // 检查新按下的键
+            var previousKeySet = new HashSet<Keys>(previousKeys);
             foreach (var key in pressedKeys)
             {
-                if (!PreviousKeyboardState.IsKeyDown(key))
+                if (!previousKeySet.Contains(key))
                 {
                     OnKeyPressed(new KeyboardEventArgs(key, CurrentKeyboardState));
+#if DEBUG
                     Console.WriteLine($"[InputManager]: 键盘{key}键被按下");
+#endif
                 }
             }
 
             // 检查释放的键
-            foreach (var key in previousPressedKeys)
+            var currentKeySet = new HashSet<Keys>(pressedKeys);
+            foreach (var key in previousKeys)
             {
-                if (!CurrentKeyboardState.IsKeyDown(key))
+                if (!currentKeySet.Contains(key))
                 {
                     OnKeyReleased(new KeyboardEventArgs(key, CurrentKeyboardState));
+#if DEBUG
                     Console.WriteLine($"[InputManager]: 键盘{key}键被释放");
+#endif
                 }
             }
         }
@@ -224,7 +232,10 @@ namespace BladeStory.Service.Services
         // 工具方法
         public Vector2 GetMousePosition()
         {
-            return new Vector2(CurrentMouseState.X, CurrentMouseState.Y);
+            //return new Vector2(CurrentMouseState.X, CurrentMouseState.Y);
+            return _viewportAdapter
+                .PointToScreen(CurrentMouseState.X, CurrentMouseState.Y)
+                .ToVector2();
         }
 
         public bool IsKeyDown(Keys key)

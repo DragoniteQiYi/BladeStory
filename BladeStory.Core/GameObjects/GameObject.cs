@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
+using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Graphics;
 using MonoGame.Extended.Particles;
 
@@ -9,52 +10,54 @@ namespace BladeStory.Core.GameObjects
     /// <summary>
     /// 通用的游戏场景对象
     /// </summary>
-    public class GameObject
+    public class GameObject : ICollisionActor
     {
         // -----标识-----
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Tag { get; set; } = string.Empty;
-
         public bool IsActive { get; set; }
         public bool IsVisible { get; set; }
+
         public Vector2 Velocity { get; set; } = Vector2.Zero;
+        public Transform2 Transform { get; set; }
+        public Sprite Sprite { get; set; }
+
         public GameObject? Parent { get; set; }
         public List<GameObject> Children { get; private set; } = [];
-
-        protected Transform2 _transform;
-        protected Sprite _sprite;
 
         // 使用 Transform2 管理变换
         public Vector2 Position
         {
-            get => _transform.Position;
-            set => _transform.Position = value;
+            get => Transform.Position;
+            set => Transform.Position = value;
         }
 
         public float Rotation
         {
-            get => _transform.Rotation;
-            set => _transform.Rotation = value;
+            get => Transform.Rotation;
+            set => Transform.Rotation = value;
         }
 
         public Vector2 Scale
         {
-            get => _transform.Scale;
-            set => _transform.Scale = value;
+            get => Transform.Scale;
+            set => Transform.Scale = value;
         }
 
         public SpriteEffects Effect
         {
-            get => _sprite.Effect;
-            set => _sprite.Effect = value;
+            get => Sprite.Effect;
+            set => Sprite.Effect = value;
         }
+
+        public IShapeF Bounds { get; private set; }
 
         public GameObject(Texture2D texture)
         {
-            _sprite = new Sprite(texture);
-            _transform = new Transform2();
-            _sprite.Origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
+            Sprite = new Sprite(texture);
+            Transform = new Transform2();
+            Sprite.Origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
         }
 
         public virtual void Update(GameTime gameTime)
@@ -67,6 +70,8 @@ namespace BladeStory.Core.GameObjects
             }
         }
 
+        public virtual void LoadContent() { }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (!IsActive || !IsVisible) return;
@@ -76,7 +81,7 @@ namespace BladeStory.Core.GameObjects
                 child?.Draw(spriteBatch);
             }
 
-            spriteBatch.Draw(_sprite, _transform.Position);
+            spriteBatch.Draw(Sprite, Transform.Position);
         }
 
         public Vector2 GetWorldPosition()
@@ -90,7 +95,7 @@ namespace BladeStory.Core.GameObjects
 
         public virtual Rectangle GetBounds()
         {
-            var bounds = _sprite.GetBoundingRectangle(_transform);
+            var bounds = Sprite.GetBoundingRectangle(Transform);
             return new Rectangle(
                 (int)bounds.X,
                 (int)bounds.Y,
@@ -106,7 +111,12 @@ namespace BladeStory.Core.GameObjects
 
         public virtual void Destroy()
         {
-            _sprite.TextureRegion.Texture?.Dispose();
+            Sprite.TextureRegion.Texture?.Dispose();
+        }
+
+        public void OnCollision(CollisionEventArgs collisionInfo)
+        {
+            throw new NotImplementedException();
         }
     }
 }
