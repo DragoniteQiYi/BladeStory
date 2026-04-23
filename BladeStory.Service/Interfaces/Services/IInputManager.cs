@@ -4,20 +4,20 @@ using MonoGame.Extended.Input;
 using MonoGame.Extended.Input.InputListeners;
 using MonoGame.Extended.ViewportAdapters;
 
-namespace BladeStory.Service.Interfaces
+namespace BladeStory.Service.Interfaces.Services
 {
     public interface IInputManager
     {
         // 键盘事件
-        event EventHandler<KeyboardEventArgs> KeyPressed;
-        event EventHandler<KeyboardEventArgs> KeyReleased;
+        event EventHandler<KeyboardEventArgs>? KeyPressed;
+        event EventHandler<KeyboardEventArgs>? KeyReleased;
 
         // 鼠标事件
-        event EventHandler<MouseEventArgs> MouseMoved;
-        event EventHandler<MouseEventArgs> MouseButtonPressed;
-        event EventHandler<MouseEventArgs> MouseButtonReleased;
-        event EventHandler<MouseEventArgs> MouseScrolled;
-        event EventHandler<TextInputEventArgs> TextInput;
+        event EventHandler<MouseEventArgs>? MouseMoved;
+        event EventHandler<MouseEventArgs>? MouseButtonPressed;
+        event EventHandler<MouseEventArgs>? MouseButtonReleased;
+        event EventHandler<MouseEventArgs>? MouseScrolled;
+        event EventHandler<TextInputEventArgs>? TextInput;
 
         // 状态查询
         KeyboardState CurrentKeyboardState { get; }

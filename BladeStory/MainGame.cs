@@ -1,5 +1,6 @@
 ﻿using BladeStory.Infrastructure.DI;
 using BladeStory.Service.Interfaces;
+using BladeStory.Service.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.ViewportAdapters;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace BladeStory
@@ -36,8 +38,8 @@ namespace BladeStory
         private BoxingViewportAdapter _viewportAdapter;
 
         // 系统服务
-        private IInputManager _inputManager;
         private ISceneManager _sceneManager;
+        private IEnumerable<IUpdate> _updatables;
 
         public MainGame(IServiceCollection services)
         {
@@ -54,18 +56,81 @@ namespace BladeStory
 
         /*
          *  由于ViewportAdapter依赖Game
-         *  而GameInputService又依赖ViewportAdapter
+         *  而InputManager又依赖ViewportAdapter
          *  所以它必须等游戏启动后再注册
          */
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            // 1.初始化窗口
+            InitializeGameWindow();
+
+            // 2.注册系统级服务
+            RegisterServices();
+
+            // 3.获取必要服务
+            GetRequiredServices();
+
+            // 4.注册系统事件
+            RegisterEvents();
+
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // TODO: use this.Content to load your game content here
+            _sceneManager.LoadSceneConfigs();
+            _sceneManager.LoadScene("Scenes/Town/Original");
+
+            var tux = Content.Load<Texture2D>("Sprites/Static/Tux");
+            _sceneManager.CreateGameObject(tux, new Vector2(200, 200));
+            // _mapRenderer = new(GraphicsDevice, _map);
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed 
+                || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            // TODO: Add your update logic here
+
+            foreach (var updatable in _updatables)
+            {
+                updatable.Update(gameTime);
+            }
+
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // TODO: Add your drawing code here
+
+            _spriteBatch.Begin();
+            _sceneManager.Draw(_spriteBatch);
+            _spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+
+        private void InitializeGameWindow()
+        {
             // 设置窗口大小
             _graphics.PreferredBackBufferWidth = 1280;
             _graphics.PreferredBackBufferHeight = 720;
             _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
+        }
 
+        private void RegisterServices()
+        {
             // 注册 ViewportAdapter
             _viewportAdapter = new BoxingViewportAdapter(
                 Window,
@@ -84,49 +149,24 @@ namespace BladeStory
             // 注册游戏核心服务
             _services.AddCoreServices();
             _services.AddFactories();
-            _services.AddGameServices();
+            _services.AddGameManagers();
+            _services.AddMiddlewares();
+            _services.AddUpdatable();
 
             // 构建服务
             _serviceProvider = _services.BuildServiceProvider();
+        }
 
-            // 获取必要服务
+        // 获取必要服务
+        private void GetRequiredServices()
+        {
             _sceneManager = _serviceProvider.GetService<ISceneManager>();
-            _inputManager = _serviceProvider.GetService<IInputManager>();
-
-            base.Initialize();
+            _updatables = _serviceProvider.GetServices<IUpdate>();
         }
 
-        protected override void LoadContent()
+        private void RegisterEvents()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-            _sceneManager.LoadSceneConfigs();
-            _sceneManager.LoadScene("Scenes/Town/Original");
-            // _mapRenderer = new(GraphicsDevice, _map);
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed 
-                || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-            _inputManager.Update(gameTime);
-
-            base.Update(gameTime);
-        }
-
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-            _sceneManager.Draw(_spriteBatch);
-            // _mapRenderer.Draw();
-
-            base.Draw(gameTime);
         }
     }
 }

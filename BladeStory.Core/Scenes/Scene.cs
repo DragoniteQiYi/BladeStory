@@ -13,7 +13,7 @@ namespace BladeStory.Core.Scenes
 
         public string Id { get; } = sceneConfig.Id;
 
-        public List<GameObject> GameObjects { get; } = [];
+        public List<Entity> GameObjects { get; } = [];
 
         public virtual void LoadContent(ContentManager contentManager) 
         {

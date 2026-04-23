@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace BladeStory.Service.Interfaces
+namespace BladeStory.Service.Interfaces.Services
 {
     public interface ICameraManager
     {

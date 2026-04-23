@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BladeStory.Service.Interfaces
+namespace BladeStory.Service.Interfaces.Services
 {
     public interface ISceneManager
     {
@@ -11,18 +11,16 @@ namespace BladeStory.Service.Interfaces
         event Action<Scene> OnSceneLoaded;
         event Action<Scene> OnSceneUnloaded;
 
+        void Update(GameTime gameTime);
+
+        void Draw(SpriteBatch spriteBatch);
+
         void LoadSceneConfigs();
 
         void LoadScene(string sceneId);
 
-        void LoadScene(Scene scene);
-
         void LoadSceneAsync(string sceneId, Action<Scene> onComplete);
 
-        void LoadSceneAsync(Scene scene, Action<Scene> onComplete);
-
-        void Update(GameTime gameTime);
-
-        void Draw(SpriteBatch spriteBatch);
+        void CreateGameObject(Texture2D texture, Vector2 position);
     }
 }

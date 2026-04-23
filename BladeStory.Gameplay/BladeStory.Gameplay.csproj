@@ -7,8 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exploration\" />
     <Folder Include="Battle\" />
+    <Folder Include="UI\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Extended" Version="5.5.1" />
+    <PackageReference Include="MonoGame.Extended.Content.Pipeline" Version="5.5.1" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BladeStory.Core\BladeStory.Core.csproj" />
   </ItemGroup>
 
 </Project>

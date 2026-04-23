@@ -1,4 +1,4 @@
-﻿namespace BladeStory.Service.Interfaces
+﻿namespace BladeStory.Service.Interfaces.Services
 {
     public interface IConfigManager
     {

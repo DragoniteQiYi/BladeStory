@@ -1,4 +1,5 @@
 ﻿using BladeStory.Service.Interfaces;
+using BladeStory.Service.Interfaces.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Input;
@@ -7,7 +8,7 @@ using MonoGame.Extended.ViewportAdapters;
 
 namespace BladeStory.Service.Services
 {
-    public class InputManager : IInputManager
+    public class InputManager : IInputManager, IUpdate
     {
         public KeyboardState CurrentKeyboardState { get; private set; }
         public KeyboardState PreviousKeyboardState { get; private set; }

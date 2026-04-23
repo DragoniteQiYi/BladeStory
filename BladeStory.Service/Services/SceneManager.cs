@@ -1,7 +1,8 @@
 ﻿using BladeStory.Configuration;
 using BladeStory.Constant;
 using BladeStory.Core.Scenes;
-using BladeStory.Service.Interfaces;
+using BladeStory.Service.Interfaces.Factories;
+using BladeStory.Service.Interfaces.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,6 +16,7 @@ namespace BladeStory.Service.Services
         private readonly ContentManager _contentManager;
         private readonly ISceneFactory _sceneFactory;
         private readonly ITiledMapRendererFactory _tiledMapRendererFactory;
+        private readonly IEntityFactory _gameObjectFactory;
 
         public Scene? CurrentScene { get; private set; }
 
@@ -28,14 +30,26 @@ namespace BladeStory.Service.Services
         public SceneManager(IConfigManager configManager,
             ContentManager contentManager,
             ISceneFactory sceneFactory,
-            ITiledMapRendererFactory tiledMapRendererFactory)
+            ITiledMapRendererFactory tiledMapRendererFactory,
+            IEntityFactory gameObjectFactory)
         {
             _configManager = configManager;
             _contentManager = contentManager;
             _sceneFactory = sceneFactory;
             _tiledMapRendererFactory = tiledMapRendererFactory;
+            _gameObjectFactory = gameObjectFactory;
 
             Console.WriteLine($"[SceneManager]: 场景管理模块初始化成功");
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            CurrentScene?.Update(gameTime);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            CurrentScene?.Draw(spriteBatch);
         }
 
         /*
@@ -73,32 +87,15 @@ namespace BladeStory.Service.Services
             OnSceneLoaded?.Invoke(CurrentScene);
         }
 
-        public void LoadScene(Scene scene)
-        {
-            CurrentScene?.UnloadContent();
-            CurrentScene = scene;
-            CurrentScene?.LoadContent(_contentManager);
-            OnSceneLoaded?.Invoke(CurrentScene);
-        }
-
         public void LoadSceneAsync(string sceneId, Action<Scene> onComplete)
         {
 
         }
 
-        public void LoadSceneAsync(Scene scene, Action<Scene> onComplete = null)
+        public void CreateGameObject(Texture2D texture, Vector2 position)
         {
-
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            CurrentScene?.Update(gameTime);
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            CurrentScene?.Draw(spriteBatch);
+            var gameObject = _gameObjectFactory.CreateEntity(texture, position);
+            CurrentScene?.GameObjects.Add(gameObject);
         }
     }
 }

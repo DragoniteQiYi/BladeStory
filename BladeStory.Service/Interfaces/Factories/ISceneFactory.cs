@@ -2,7 +2,7 @@
 using BladeStory.Core.Scenes;
 using MonoGame.Extended.Tiled;
 
-namespace BladeStory.Service.Interfaces
+namespace BladeStory.Service.Interfaces.Factories
 {
     public interface ISceneFactory
     {

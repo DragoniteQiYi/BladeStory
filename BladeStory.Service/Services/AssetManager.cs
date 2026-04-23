@@ -1,4 +1,4 @@
-﻿using BladeStory.Service.Interfaces;
+﻿using BladeStory.Service.Interfaces.Services;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;

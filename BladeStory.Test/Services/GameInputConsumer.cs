@@ -1,4 +1,4 @@
-﻿using BladeStory.Service.Interfaces;
+﻿using BladeStory.Service.Interfaces.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Input;

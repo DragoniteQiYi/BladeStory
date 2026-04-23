@@ -1,7 +1,7 @@
 ﻿using BladeStory.Configuration;
 using BladeStory.Constant;
 using BladeStory.Core.Scenes;
-using BladeStory.Service.Interfaces;
+using BladeStory.Service.Interfaces.Factories;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
 

@@ -25,6 +25,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Core", "BladeSto
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Gameplay", "BladeStory.Gameplay\BladeStory.Gameplay.csproj", "{73CD913D-0DCF-47BE-AF5D-BC493B33FF8E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C0962A71-B84A-4173-A833-AA60D97CF118} = {C0962A71-B84A-4173-A833-AA60D97CF118}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BladeStory.Test", "BladeStory.Test\BladeStory.Test.csproj", "{B0D4A272-FBAF-4B6B-BDC8-5833732874A4}"
 EndProject

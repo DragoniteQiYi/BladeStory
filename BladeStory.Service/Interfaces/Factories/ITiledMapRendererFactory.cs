@@ -2,7 +2,7 @@
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 
-namespace BladeStory.Service.Interfaces
+namespace BladeStory.Service.Interfaces.Factories
 {
     public interface ITiledMapRendererFactory
     {

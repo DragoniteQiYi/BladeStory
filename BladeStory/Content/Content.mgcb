@@ -19,6 +19,18 @@
 /processor:TiledMapProcessor
 /build:Maps/Town/OriginalTown.tmx;Maps/Town/OriginalTown
 
+#begin Sprites/Static/Tux.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Static/Tux.png
+
 #begin Sprites/TileMaps/野外.png
 /importer:TextureImporter
 /processor:TextureProcessor

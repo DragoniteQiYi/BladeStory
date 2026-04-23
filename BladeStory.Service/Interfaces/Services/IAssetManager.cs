@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
-namespace BladeStory.Service.Interfaces
+namespace BladeStory.Service.Interfaces.Services
 {
     public interface IAssetManager
     {
