@@ -14,11 +14,10 @@ namespace BladeStory.Infrastructure.DI
                 var inputManager = sp.GetRequiredService<IInputManager>();
                 return new InputStateMiddleware(inputManager);
             });
-            services.AddSingleton<ICommandMiddleware>(sp =>
+            services.AddSingleton(sp =>
             {
                 var inputStateMiddleware = sp.GetRequiredService<IInputStateMiddleware>();
-                var timeManager = sp.GetRequiredService<ITimeManager>();
-                return new PlayerCommandMiddleware(inputStateMiddleware, timeManager);
+                return new PlayerCommandMiddleware(inputStateMiddleware);
             });
 
             return services;

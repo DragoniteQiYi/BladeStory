@@ -5,10 +5,10 @@ namespace BladeStory.Core.Commands
 {
     public struct DashCommand : ICommand
     {
-        public bool IsValid { get; }
+        public bool IsValid { get; set; }
 
-        public GameTime GameTime { get; }
+        public GameTime GameTime { get; set; }
 
-        public bool Interact { get; set; }
+        public bool IsDashing { get; set; }
     }
 }

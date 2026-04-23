@@ -5,17 +5,10 @@ namespace BladeStory.Core.Commands
 {
     public struct InteractCommand : ICommand
     {
-        public bool IsValid { get; }
+        public bool IsValid { get; set; }
 
-        public GameTime GameTime { get; }
+        public GameTime GameTime { get; set; }
 
-        public bool Interact { get; set; }
-
-        public InteractCommand(bool isValid, GameTime gameTime, bool interact)
-        {
-            IsValid = isValid;
-            GameTime = gameTime;
-            Interact = interact;
-        }
+        public Point MousePosition { get; set; }
     }
 }
