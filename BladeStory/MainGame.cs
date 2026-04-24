@@ -1,6 +1,6 @@
 ﻿using BladeStory.Infrastructure.DI;
 using BladeStory.Service.Interfaces;
-using BladeStory.Service.Interfaces.Services;
+using BladeStory.Service.Interfaces.Managers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

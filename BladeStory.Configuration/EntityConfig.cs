@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Text.Json.Serialization;
 
 namespace BladeStory.Configuration
 {
@@ -8,7 +7,7 @@ namespace BladeStory.Configuration
     {
         public string? Name;
 
-        public Vector2Data? Position;
+        public Vector2 Position;
 
         public string? Texture;
     }

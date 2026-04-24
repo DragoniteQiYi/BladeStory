@@ -1,12 +1,12 @@
 ﻿using BladeStory.Service.Interfaces;
-using BladeStory.Service.Interfaces.Services;
+using BladeStory.Service.Interfaces.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Input;
 using MonoGame.Extended.Input.InputListeners;
 using MonoGame.Extended.ViewportAdapters;
 
-namespace BladeStory.Service.Services
+namespace BladeStory.Service.Managers
 {
     public class InputManager : IInputManager, IUpdatable
     {

@@ -4,7 +4,7 @@ using MonoGame.Extended.Input;
 using MonoGame.Extended.Input.InputListeners;
 using MonoGame.Extended.ViewportAdapters;
 
-namespace BladeStory.Service.Interfaces.Services
+namespace BladeStory.Service.Interfaces.Managers
 {
     public interface IInputManager
     {

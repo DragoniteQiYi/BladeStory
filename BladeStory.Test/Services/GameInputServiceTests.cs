@@ -1,4 +1,4 @@
-﻿using BladeStory.Service.Interfaces.Services;
+﻿using BladeStory.Service.Interfaces.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;

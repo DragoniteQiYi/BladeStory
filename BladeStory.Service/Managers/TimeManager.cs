@@ -1,8 +1,8 @@
 ﻿using BladeStory.Service.Interfaces;
-using BladeStory.Service.Interfaces.Services;
+using BladeStory.Service.Interfaces.Managers;
 using Microsoft.Xna.Framework;
 
-namespace BladeStory.Service.Services
+namespace BladeStory.Service.Managers
 {
     public class TimeManager : ITimeManager, IUpdatable
     {

@@ -1,8 +1,8 @@
-﻿using BladeStory.Service.Interfaces.Services;
+﻿using BladeStory.Service.Interfaces.Managers;
 using BladeStory.Utility;
 using Microsoft.Xna.Framework.Content;
 
-namespace BladeStory.Service.Services
+namespace BladeStory.Service.Managers
 {
     public class ConfigManager : IConfigManager
     {

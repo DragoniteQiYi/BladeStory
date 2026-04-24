@@ -1,10 +1,10 @@
-﻿using BladeStory.Service.Interfaces.Services;
+﻿using BladeStory.Service.Interfaces.Managers;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
-namespace BladeStory.Service.Services
+namespace BladeStory.Service.Managers
 {
     public class AssetManager : IAssetManager
     {

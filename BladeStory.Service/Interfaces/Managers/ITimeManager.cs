@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace BladeStory.Service.Interfaces.Services
+namespace BladeStory.Service.Interfaces.Managers
 {
     public interface ITimeManager
     {

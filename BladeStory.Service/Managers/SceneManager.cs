@@ -3,13 +3,13 @@ using BladeStory.Constant;
 using BladeStory.Core.Scenes;
 using BladeStory.Service.Interfaces;
 using BladeStory.Service.Interfaces.Factories;
-using BladeStory.Service.Interfaces.Services;
+using BladeStory.Service.Interfaces.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
 
-namespace BladeStory.Service.Services
+namespace BladeStory.Service.Managers
 {
     public class SceneManager : ISceneManager, IStartable
     {

@@ -1,5 +1,5 @@
 ﻿using BladeStory.Service.Interfaces.Middlewares;
-using BladeStory.Service.Interfaces.Services;
+using BladeStory.Service.Interfaces.Managers;
 using BladeStory.Service.Middlewares;
 using Microsoft.Extensions.DependencyInjection;
 

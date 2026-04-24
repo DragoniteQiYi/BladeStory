@@ -2,10 +2,10 @@
 using BladeStory.Core.Components;
 using BladeStory.Service.Interfaces;
 using BladeStory.Service.Interfaces.Factories;
-using BladeStory.Service.Interfaces.Services;
+using BladeStory.Service.Interfaces.Managers;
 using Microsoft.Xna.Framework;
 
-namespace BladeStory.Service.Services
+namespace BladeStory.Service.Managers
 {
     public class EntityManager : IEntityManager, IStartable
     {

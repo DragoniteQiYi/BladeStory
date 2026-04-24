@@ -1,7 +1,7 @@
 ﻿using BladeStory.Core.Components;
 using Microsoft.Xna.Framework;
 
-namespace BladeStory.Service.Interfaces.Services
+namespace BladeStory.Service.Interfaces.Managers
 {
     /*
      *  不要让场景管理器生成实体
