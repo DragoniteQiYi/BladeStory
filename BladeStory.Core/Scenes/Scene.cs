@@ -6,8 +6,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BladeStory.Core.Scenes
 {
-    // 场景
-    public abstract class Scene(SceneConfig sceneConfig)
+    /*
+     * 场景的唯一职责：负责持有并更新场景对象
+     * 它不负责：加载或销毁资源和对象 
+     */
+    public class Scene(SceneConfig sceneConfig)
     {
         protected readonly SceneConfig _sceneConfig = sceneConfig;
 
@@ -31,7 +34,6 @@ namespace BladeStory.Core.Scenes
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-
             foreach (var obj in GameObjects)
                 obj.Draw(spriteBatch);
         }

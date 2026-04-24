@@ -18,6 +18,7 @@ namespace BladeStory.Service.Managers
         private readonly ISceneFactory _sceneFactory;
         private readonly ITiledMapRendererFactory _tiledMapRendererFactory;
         private readonly IEntityFactory _entityFactory;
+        private readonly ITileMapManager _tileMapManager;
 
         public Scene? CurrentScene 
         { 
@@ -25,7 +26,7 @@ namespace BladeStory.Service.Managers
             private set { } 
         }
 
-        public event Action<Scene>? OnSceneLoaded;
+        public event Action<Scene?>? OnSceneLoaded;
         public event Action<Scene>? OnSceneUnloaded;
 
         private bool _isTransitioning;
@@ -37,13 +38,15 @@ namespace BladeStory.Service.Managers
             ContentManager contentManager,
             ISceneFactory sceneFactory,
             ITiledMapRendererFactory tiledMapRendererFactory,
-            IEntityFactory gameObjectFactory)
+            IEntityFactory gameObjectFactory,
+            ITileMapManager tileMapManager)
         {
             _configManager = configManager;
             _contentManager = contentManager;
             _sceneFactory = sceneFactory;
             _tiledMapRendererFactory = tiledMapRendererFactory;
             _entityFactory = gameObjectFactory;
+            _tileMapManager = tileMapManager;
 
             Console.WriteLine($"[SceneManager]: 场景管理模块初始化成功");
         }
@@ -74,18 +77,20 @@ namespace BladeStory.Service.Managers
         {
             if (_isTransitioning) return;
 
+            _tileMapManager.UnloadMap();
             CurrentScene?.UnloadContent();
             _isTransitioning = true;
 
             var sceneConfig = _sceneConfigs[sceneId];
             var type = _sceneConfigs[sceneId].Type;
             var tiledMapId = _sceneConfigs[sceneId].TiledMap;
+        
             TiledMap map;
 
             if (type == SceneType.Tiled)
             {
-                map = _contentManager.Load<TiledMap>(tiledMapId);
-                _currentScene = _sceneFactory.CreateTiledScene(sceneConfig, map);
+                map = _tileMapManager.LoadMap(tiledMapId);
+                _currentScene = _sceneFactory.CreateScene(sceneConfig);
             }
 
             _currentScene?.LoadContent(_contentManager);

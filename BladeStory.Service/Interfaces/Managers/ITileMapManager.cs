@@ -1,12 +1,14 @@
 ﻿using BladeStory.Core.Tilemap;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended;
+using MonoGame.Extended.Tiled;
 
 namespace BladeStory.Service.Interfaces.Managers
 {
     public interface ITileMapManager
     {
         // 地图基本信息
-        string MapName { get; }
+        string? MapName { get; }
         int Width { get; }
         int Height { get; }
         int TileWidth { get; }
@@ -16,7 +18,7 @@ namespace BladeStory.Service.Interfaces.Managers
         Vector2 MapSize { get; }
 
         // 加载与卸载
-        void LoadMap(string mapPath);
+        TiledMap LoadMap(string? mapPath);
         void UnloadMap();
         bool IsLoaded { get; }
 
@@ -35,7 +37,7 @@ namespace BladeStory.Service.Interfaces.Managers
 
         // 渲染
         void Update(GameTime gameTime);
-        void Draw();
+        void Draw(OrthographicCamera camera);
 
         // 坐标转换
         Vector2 TileToWorldPosition(int x, int y);

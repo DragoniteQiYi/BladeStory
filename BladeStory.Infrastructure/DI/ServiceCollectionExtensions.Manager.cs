@@ -4,6 +4,7 @@ using BladeStory.Service.Managers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 
 namespace BladeStory.Infrastructure.DI
@@ -32,6 +33,12 @@ namespace BladeStory.Infrastructure.DI
                 var contentManager = sp.GetRequiredService<ContentManager>();
                 return new ConfigManager(contentManager);
             });
+            services.AddSingleton<ITileMapManager>(sp =>
+            {
+                var graphicsDevice = sp.GetRequiredService<GraphicsDevice>();
+                var contentManager = sp.GetRequiredService<ContentManager>();
+                return new TileMapManager(graphicsDevice, contentManager);
+            });
             services.AddSingleton<ISceneManager>(sp =>
             {
                 var configManager = sp.GetRequiredService<IConfigManager>();
@@ -39,8 +46,9 @@ namespace BladeStory.Infrastructure.DI
                 var sceneFactory = sp.GetRequiredService<ISceneFactory>();
                 var tiledMapRendererFactory = sp.GetRequiredService<ITiledMapRendererFactory>();
                 var gameObjectFactory = sp.GetRequiredService<IEntityFactory>();
-                return new SceneManager(configManager, contentManager,
-                    sceneFactory, tiledMapRendererFactory, gameObjectFactory);
+                var tileMapManager = sp.GetRequiredService<ITileMapManager>();
+                return new SceneManager(configManager, contentManager, sceneFactory, 
+                    tiledMapRendererFactory, gameObjectFactory, tileMapManager);
             });
             services.AddSingleton<ITimeManager>(sp =>
             {
@@ -51,7 +59,8 @@ namespace BladeStory.Infrastructure.DI
             {
                 var sceneManager = sp.GetRequiredService<ISceneManager>();
                 var entityFactory = sp.GetRequiredService<IEntityFactory>();
-                return new EntityManager(sceneManager, entityFactory);
+                var configManager = sp.GetRequiredService<IConfigManager>();
+                return new EntityManager(sceneManager, entityFactory, configManager);
             });
 
             return services;

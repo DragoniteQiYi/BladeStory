@@ -15,11 +15,7 @@ namespace BladeStory.Infrastructure.DI
                 var graphicsDevice = sp.GetRequiredService<GraphicsDevice>();
                 return new TiledMapRendererFactory(graphicsDevice);
             });
-            services.AddSingleton<ISceneFactory>(sp =>
-            {
-                var tiledMapRendererFactory = sp.GetRequiredService<ITiledMapRendererFactory>();
-                return new SceneFactory(tiledMapRendererFactory);
-            });
+            services.AddSingleton<ISceneFactory, SceneFactory>();
             services.AddSingleton<IEntityFactory, EntityFactory>(sp =>
             {
                 var contentManager = sp.GetRequiredService<ContentManager>();

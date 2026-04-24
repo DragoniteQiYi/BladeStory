@@ -8,7 +8,7 @@ namespace BladeStory.Service.Interfaces.Managers
     {
         Scene? CurrentScene { get; }
 
-        event Action<Scene> OnSceneLoaded;
+        event Action<Scene?> OnSceneLoaded;
         event Action<Scene> OnSceneUnloaded;
 
         void Update(GameTime gameTime);

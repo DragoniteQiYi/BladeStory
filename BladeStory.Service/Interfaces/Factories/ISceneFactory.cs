@@ -6,6 +6,6 @@ namespace BladeStory.Service.Interfaces.Factories
 {
     public interface ISceneFactory
     {
-        Scene CreateTiledScene(SceneConfig sceneConfig, TiledMap tiledMap);
+        Scene CreateScene(SceneConfig sceneConfig);
     }
 }

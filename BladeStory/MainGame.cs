@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.ViewportAdapters;
 using System;
@@ -36,9 +37,11 @@ namespace BladeStory
         private readonly GraphicsDeviceManager _graphics;
         private IServiceProvider _serviceProvider;
         private BoxingViewportAdapter _viewportAdapter;
+        private OrthographicCamera _camera;
 
         // 系统服务
         private ISceneManager _sceneManager;
+        private ITileMapManager _tileMapManager;
         private IEnumerable<IStartable> _startables;
         private IEnumerable<IUpdatable> _updatables;
 
@@ -115,6 +118,7 @@ namespace BladeStory
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
+            _tileMapManager.Draw(_camera);
             _sceneManager.Draw(_spriteBatch);
             _spriteBatch.End();
 
@@ -139,10 +143,15 @@ namespace BladeStory
                 640,
                 360
             );
+            _camera = new OrthographicCamera(_viewportAdapter);
+
             _services.AddSingleton<ViewportAdapter>(_viewportAdapter);
 
             // 注册 GraphicsDevice
             _services.AddSingleton(GraphicsDevice);
+
+            // 注册 Camera
+            _services.AddSingleton(_camera);
 
             // 注册 ContentManager
             _services.AddSingleton(Content);
@@ -163,6 +172,7 @@ namespace BladeStory
         private void GetRequiredServices()
         {
             _sceneManager = _serviceProvider.GetService<ISceneManager>();
+            _tileMapManager = _serviceProvider.GetService<ITileMapManager>();
             _startables = _serviceProvider.GetServices<IStartable>();
             _updatables = _serviceProvider.GetServices<IUpdatable>();
         }

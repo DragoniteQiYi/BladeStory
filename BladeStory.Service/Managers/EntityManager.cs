@@ -11,13 +11,17 @@ namespace BladeStory.Service.Managers
     {
         private readonly ISceneManager _sceneManager;
         private readonly IEntityFactory _entityFactory;
+        private readonly IConfigManager _configManager;
 
         private Dictionary<string, EntityConfig> _entityConfigs = [];
 
-        public EntityManager(ISceneManager sceneManager, IEntityFactory entityFactory)
+        public EntityManager(ISceneManager sceneManager, 
+            IEntityFactory entityFactory, 
+            IConfigManager configManager)
         {
             _sceneManager = sceneManager;
             _entityFactory = entityFactory;
+            _configManager = configManager;
         }
 
         public void Initialize()
