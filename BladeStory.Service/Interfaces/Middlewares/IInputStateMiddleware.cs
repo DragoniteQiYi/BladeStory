@@ -12,7 +12,5 @@ namespace BladeStory.Service.Interfaces.Middlewares
         Vector2 MouseDelta { get; }
         int ScrollWheelValue { get; }
         int ScrollWheelDelta { get; }
-
-        void EndOfFrame();
     }
 }

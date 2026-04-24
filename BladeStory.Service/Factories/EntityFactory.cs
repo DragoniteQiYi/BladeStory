@@ -1,19 +1,23 @@
-﻿using BladeStory.Core.GameObjects;
+﻿using BladeStory.Configuration;
+using BladeStory.Core.GameObjects;
 using BladeStory.Service.Interfaces.Factories;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace BladeStory.Service.Factories
 {
     public class EntityFactory : IEntityFactory
     {
-        public Entity CreateEntity(Texture2D texture, Vector2 position)
+        private readonly ContentManager _contentManager;
+
+        public EntityFactory(ContentManager contentManager)
         {
-            if (position == Vector2.Zero)
-            {
-                return new Entity(texture);
-            }
-            return new Entity(texture, position);
+            _contentManager = contentManager;
+        }
+
+        public Entity CreateEntity(EntityConfig entityConfig, Vector2 position)
+        {
+            throw new NotImplementedException();
         }
     }
 }

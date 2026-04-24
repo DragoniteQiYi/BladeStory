@@ -1,0 +1,10 @@
+{
+  "NPC/OriginalTown/Tux": {
+    "name": "Linux夜鹭",
+    "position": {
+      "x": 10,
+      "y": 10
+    },
+    "texture": "Sprites/Static/Tux" 
+  }
+}

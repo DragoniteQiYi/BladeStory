@@ -31,7 +31,6 @@ namespace BladeStory.Service.Interfaces.Services
         bool IsEnabled { get; set; }
 
         // 工具方法
-        void Update(GameTime gameTime);
         Vector2 GetMousePosition();
         bool IsKeyDown(Keys key);
         bool IsKeyPressed(Keys key);

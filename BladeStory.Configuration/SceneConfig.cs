@@ -3,7 +3,7 @@
 namespace BladeStory.Configuration
 {
     [Serializable]
-    public class SceneConfig
+    public record SceneConfig
     {
         public required string Id {  get; set; }
 

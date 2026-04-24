@@ -9,7 +9,7 @@ using MonoGame.Extended.Input;
 
 namespace BladeStory.Service.Middlewares
 {
-    public class PlayerCommandMiddleware : IUpdate, IDisposable
+    public class PlayerCommandMiddleware : IUpdatable, IDisposable
     {
         private readonly IInputStateMiddleware _inputState;
 

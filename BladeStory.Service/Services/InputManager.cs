@@ -8,7 +8,7 @@ using MonoGame.Extended.ViewportAdapters;
 
 namespace BladeStory.Service.Services
 {
-    public class InputManager : IInputManager, IUpdate
+    public class InputManager : IInputManager, IUpdatable
     {
         public KeyboardState CurrentKeyboardState { get; private set; }
         public KeyboardState PreviousKeyboardState { get; private set; }

@@ -1,6 +1,7 @@
 ﻿using BladeStory.Service.Factories;
 using BladeStory.Service.Interfaces.Factories;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BladeStory.Infrastructure.DI
@@ -19,7 +20,11 @@ namespace BladeStory.Infrastructure.DI
                 var tiledMapRendererFactory = sp.GetRequiredService<ITiledMapRendererFactory>();
                 return new SceneFactory(tiledMapRendererFactory);
             });
-            services.AddSingleton<IEntityFactory, EntityFactory>();
+            services.AddSingleton<IEntityFactory, EntityFactory>(sp =>
+            {
+                var contentManager = sp.GetRequiredService<ContentManager>();
+                return new EntityFactory(contentManager);
+            });
 
             return services;
         }

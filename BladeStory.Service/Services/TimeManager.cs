@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace BladeStory.Service.Services
 {
-    public class TimeManager : ITimeManager, IUpdate
+    public class TimeManager : ITimeManager, IUpdatable
     {
         private readonly Game _game;
 

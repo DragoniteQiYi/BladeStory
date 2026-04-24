@@ -8,7 +8,7 @@ using MonoGame.Extended.Input.InputListeners;
 
 namespace BladeStory.Service.Middlewares
 {
-    public class InputStateMiddleware : IInputStateMiddleware, IUpdate
+    public class InputStateMiddleware : IInputStateMiddleware, IUpdatable
     {
         private readonly IInputManager _inputManager;
 
@@ -29,35 +29,35 @@ namespace BladeStory.Service.Middlewares
         }
 
         // ========== IInputStateMiddleware 实现 ==========
-        public HashSet<Keys> PressedKeys { get; } = new();
-        public HashSet<MouseButton> PressedButtons { get; } = new();
+        public HashSet<Keys> PressedKeys { get; } = [];
+        public HashSet<MouseButton> PressedButtons { get; } = [];
         public Point MousePosition { get; private set; }
         public Vector2 MouseDelta { get; private set; }
         public int ScrollWheelValue { get; private set; }
         public int ScrollWheelDelta { get; private set; }
 
         // ========== 事件处理（从 IInputManager 事件同步到此中间件状态） ==========
-        private void OnKeyPressed(object sender, KeyboardEventArgs e)
+        private void OnKeyPressed(object? sender, KeyboardEventArgs e)
         {
             PressedKeys.Add(e.Key);
         }
 
-        private void OnKeyReleased(object sender, KeyboardEventArgs e)
+        private void OnKeyReleased(object? sender, KeyboardEventArgs e)
         {
             PressedKeys.Remove(e.Key);
         }
 
-        private void OnMousePressed(object sender, MouseEventArgs e)
+        private void OnMousePressed(object? sender, MouseEventArgs e)
         {
             PressedButtons.Add(e.Button);
         }
 
-        private void OnMouseReleased(object sender, MouseEventArgs e)
+        private void OnMouseReleased(object? sender, MouseEventArgs e)
         {
             PressedButtons.Remove(e.Button);
         }
 
-        private void OnMouseScrolled(object sender, MouseEventArgs e)
+        private void OnMouseScrolled(object? sender, MouseEventArgs e)
         {
             _currentScrollValue += e.ScrollWheelDelta;
         }
@@ -76,17 +76,10 @@ namespace BladeStory.Service.Middlewares
             );
 
             // 滚轮值：通过事件累积（如果走轮询，改用下面的代码）
-            // var currentScroll = _inputManager.CurrentMouseState.ScrollWheelValue;
-            // ScrollWheelDelta = currentScroll - _previousScrollValue;
-            // ScrollWheelValue = currentScroll;
-            // _previousScrollValue = currentScroll;
-        }
-
-        public void EndOfFrame()
-        {
-            // 如果你用事件累积滚轮值，在这里结算 Delta
-            ScrollWheelDelta = _currentScrollValue - ScrollWheelValue;
-            ScrollWheelValue = _currentScrollValue;
+            var currentScroll = _inputManager.CurrentMouseState.ScrollWheelValue;
+            ScrollWheelDelta = currentScroll - _previousScrollValue;
+            ScrollWheelValue = currentScroll;
+            _previousScrollValue = currentScroll;
         }
     }
 }

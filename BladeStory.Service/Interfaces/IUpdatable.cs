@@ -2,7 +2,7 @@
 
 namespace BladeStory.Service.Interfaces
 {
-    public interface IUpdate
+    public interface IUpdatable
     {
         void Update(GameTime gameTime);
     }

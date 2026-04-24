@@ -1,5 +1,4 @@
 ﻿using BladeStory.Infrastructure.DI;
-using BladeStory.Service.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using System;

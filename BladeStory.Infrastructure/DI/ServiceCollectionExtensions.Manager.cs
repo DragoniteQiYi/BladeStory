@@ -47,6 +47,12 @@ namespace BladeStory.Infrastructure.DI
                 var game = sp.GetRequiredService<Game>();
                 return new TimeManager(game);
             });
+            services.AddSingleton<IEntityManager>(sp =>
+            {
+                var sceneManager = sp.GetRequiredService<ISceneManager>();
+                var entityFactory = sp.GetRequiredService<IEntityFactory>();
+                return new EntityManager(sceneManager, entityFactory);
+            });
 
             return services;
         }

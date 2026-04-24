@@ -1,6 +1,7 @@
 ﻿using BladeStory.Configuration;
 using BladeStory.Constant;
 using BladeStory.Core.Scenes;
+using BladeStory.Service.Interfaces;
 using BladeStory.Service.Interfaces.Factories;
 using BladeStory.Service.Interfaces.Services;
 using Microsoft.Xna.Framework;
@@ -10,20 +11,25 @@ using MonoGame.Extended.Tiled;
 
 namespace BladeStory.Service.Services
 {
-    public class SceneManager : ISceneManager
+    public class SceneManager : ISceneManager, IStartable
     {
         private readonly IConfigManager _configManager;
         private readonly ContentManager _contentManager;
         private readonly ISceneFactory _sceneFactory;
         private readonly ITiledMapRendererFactory _tiledMapRendererFactory;
-        private readonly IEntityFactory _gameObjectFactory;
+        private readonly IEntityFactory _entityFactory;
 
-        public Scene? CurrentScene { get; private set; }
+        public Scene? CurrentScene 
+        { 
+            get => _currentScene;
+            private set { } 
+        }
 
         public event Action<Scene>? OnSceneLoaded;
         public event Action<Scene>? OnSceneUnloaded;
 
         private bool _isTransitioning;
+        private Scene? _currentScene;
         private Dictionary<string, Scene> _scenes = [];
         private Dictionary<string, SceneConfig> _sceneConfigs = [];
 
@@ -37,26 +43,12 @@ namespace BladeStory.Service.Services
             _contentManager = contentManager;
             _sceneFactory = sceneFactory;
             _tiledMapRendererFactory = tiledMapRendererFactory;
-            _gameObjectFactory = gameObjectFactory;
+            _entityFactory = gameObjectFactory;
 
             Console.WriteLine($"[SceneManager]: 场景管理模块初始化成功");
         }
 
-        public void Update(GameTime gameTime)
-        {
-            CurrentScene?.Update(gameTime);
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            CurrentScene?.Draw(spriteBatch);
-        }
-
-        /*
-         * 由于加载只发生在游戏初次启动
-         * 所以不需要异步，避免出现时序问题
-         */
-        public void LoadSceneConfigs()
+        public void Initialize()
         {
             _sceneConfigs = _configManager
                 .LoadConfig<Dictionary<string, SceneConfig>>("Content\\Configs\\Scene.json");
@@ -68,9 +60,22 @@ namespace BladeStory.Service.Services
             }
         }
 
+        public void Update(GameTime gameTime)
+        {
+            _currentScene?.Update(gameTime);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            _currentScene?.Draw(spriteBatch);
+        }
+
         public void LoadScene(string sceneId)
         {
+            if (_isTransitioning) return;
+
             CurrentScene?.UnloadContent();
+            _isTransitioning = true;
 
             var sceneConfig = _sceneConfigs[sceneId];
             var type = _sceneConfigs[sceneId].Type;
@@ -80,22 +85,17 @@ namespace BladeStory.Service.Services
             if (type == SceneType.Tiled)
             {
                 map = _contentManager.Load<TiledMap>(tiledMapId);
-                CurrentScene = _sceneFactory.CreateTiledScene(sceneConfig, map);
+                _currentScene = _sceneFactory.CreateTiledScene(sceneConfig, map);
             }
 
-            CurrentScene?.LoadContent(_contentManager);
-            OnSceneLoaded?.Invoke(CurrentScene);
+            _currentScene?.LoadContent(_contentManager);
+            OnSceneLoaded?.Invoke(_currentScene);
+            _isTransitioning = false;
         }
 
         public void LoadSceneAsync(string sceneId, Action<Scene> onComplete)
         {
 
-        }
-
-        public void CreateGameObject(Texture2D texture, Vector2 position)
-        {
-            var gameObject = _gameObjectFactory.CreateEntity(texture, position);
-            CurrentScene?.GameObjects.Add(gameObject);
         }
     }
 }

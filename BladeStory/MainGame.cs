@@ -39,7 +39,8 @@ namespace BladeStory
 
         // 系统服务
         private ISceneManager _sceneManager;
-        private IEnumerable<IUpdate> _updatables;
+        private IEnumerable<IStartable> _startables;
+        private IEnumerable<IUpdatable> _updatables;
 
         public MainGame(IServiceCollection services)
         {
@@ -72,8 +73,10 @@ namespace BladeStory
             // 3.获取必要服务
             GetRequiredServices();
 
-            // 4.注册系统事件
-            RegisterEvents();
+            foreach (var startable in _startables)
+            {
+                startable.Initialize();
+            }
 
             base.Initialize();
         }
@@ -83,11 +86,9 @@ namespace BladeStory
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _sceneManager.LoadSceneConfigs();
+
             _sceneManager.LoadScene("Scenes/Town/Original");
 
-            var tux = Content.Load<Texture2D>("Sprites/Static/Tux");
-            _sceneManager.CreateGameObject(tux, new Vector2(200, 200));
             // _mapRenderer = new(GraphicsDevice, _map);
         }
 
@@ -151,6 +152,7 @@ namespace BladeStory
             _services.AddFactories();
             _services.AddGameManagers();
             _services.AddMiddlewares();
+            _services.AddStartable();
             _services.AddUpdatable();
 
             // 构建服务
@@ -161,12 +163,24 @@ namespace BladeStory
         private void GetRequiredServices()
         {
             _sceneManager = _serviceProvider.GetService<ISceneManager>();
-            _updatables = _serviceProvider.GetServices<IUpdate>();
+            _startables = _serviceProvider.GetServices<IStartable>();
+            _updatables = _serviceProvider.GetServices<IUpdatable>();
         }
 
-        private void RegisterEvents()
+        protected override void Dispose(bool disposing)
         {
-
+            if (disposing)
+            {
+#if DEBUG
+                var handle = GetConsoleWindow();
+                if (handle != IntPtr.Zero)
+                    ShowWindow(handle, SW_HIDE);
+#endif
+                _spriteBatch?.Dispose();
+                // 如果 _serviceProvider 实现了 IDisposable，也应该释放
+                (_serviceProvider as IDisposable)?.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
