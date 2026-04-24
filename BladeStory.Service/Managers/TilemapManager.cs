@@ -317,23 +317,33 @@ namespace BladeStory.Service.Managers
         {
             if (!IsLoaded || camera == null) return;
 
-            // MonoGame.Extended 5.5.1 的 Camera
-            // 需要保存和恢复混合状态以正确处理透明度
+            // 在绘制前设置点采样，避免纹理过滤导致的边缘混合
             var previousBlendState = _graphicsDevice.BlendState;
-            _graphicsDevice.BlendState = BlendState.AlphaBlend;
+            var previousSamplerState = _graphicsDevice.SamplerStates[0];
 
-            // 如果使用的是 MonoGame.Extended 的 OrthographicCamera
+            _graphicsDevice.BlendState = BlendState.AlphaBlend;
+            _graphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+
             if (camera is OrthographicCamera orthoCamera)
             {
+                // 取整处理
+                var originalPos = orthoCamera.Position;
+                orthoCamera.Position = new Vector2(
+                    (float)Math.Round(originalPos.X),
+                    (float)Math.Round(originalPos.Y)
+                );
+
                 _tiledMapRenderer?.Draw(orthoCamera.GetViewMatrix());
+                orthoCamera.Position = originalPos;
             }
-            // 如果使用的是自定义Camera，需要调整
             else
             {
                 _tiledMapRenderer?.Draw(camera.GetViewMatrix());
             }
 
+            // 恢复状态
             _graphicsDevice.BlendState = previousBlendState;
+            _graphicsDevice.SamplerStates[0] = previousSamplerState;
         }
 
         // ========== 坐标转换 ==========
