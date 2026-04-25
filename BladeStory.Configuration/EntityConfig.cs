@@ -5,10 +5,10 @@ namespace BladeStory.Configuration
     [Serializable]
     public record EntityConfig
     {
-        public string? Name;
+        public required string Name { get; set; }
 
-        public Vector2 Position;
+        public Vector2 Position { get; set; }
 
-        public string? Texture;
+        public string? Texture { get; set; }
     }
 }

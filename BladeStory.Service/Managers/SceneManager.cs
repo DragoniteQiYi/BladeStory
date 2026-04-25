@@ -17,8 +17,8 @@ namespace BladeStory.Service.Managers
         private readonly ContentManager _contentManager;
         private readonly ISceneFactory _sceneFactory;
         private readonly ITiledMapRendererFactory _tiledMapRendererFactory;
-        private readonly IEntityFactory _entityFactory;
         private readonly ITileMapManager _tileMapManager;
+        private readonly IEntityManager _entityManager;
 
         public Scene? CurrentScene 
         { 
@@ -38,23 +38,25 @@ namespace BladeStory.Service.Managers
             ContentManager contentManager,
             ISceneFactory sceneFactory,
             ITiledMapRendererFactory tiledMapRendererFactory,
-            IEntityFactory gameObjectFactory,
-            ITileMapManager tileMapManager)
+            ITileMapManager tileMapManager,
+            IEntityManager entityManager)
         {
             _configManager = configManager;
             _contentManager = contentManager;
             _sceneFactory = sceneFactory;
             _tiledMapRendererFactory = tiledMapRendererFactory;
-            _entityFactory = gameObjectFactory;
             _tileMapManager = tileMapManager;
+            _entityManager = entityManager;
 
             Console.WriteLine($"[SceneManager]: 场景管理模块初始化成功");
         }
 
         public void Initialize()
         {
+#if DEBUG
             _sceneConfigs = _configManager
                 .LoadConfig<Dictionary<string, SceneConfig>>("Content\\Configs\\Scene.json");
+#endif
 
             Console.WriteLine($"[SceneManager]: 已经加载{_sceneConfigs.Count}条配置");
             foreach (var sceneConfig in _sceneConfigs)
@@ -91,6 +93,15 @@ namespace BladeStory.Service.Managers
             {
                 map = _tileMapManager.LoadMap(tiledMapId);
                 _currentScene = _sceneFactory.CreateScene(sceneConfig);
+
+                _entityManager.CurrentScene = _currentScene;
+
+                // 生成地图实体
+                var mapObjects = _tileMapManager.AllObjects;
+                foreach (var mapObject in mapObjects)
+                {
+                    _entityManager.Spawn(mapObject.Id, mapObject.Position);
+                }
             }
 
             _currentScene?.LoadContent(_contentManager);

@@ -1,4 +1,5 @@
 ﻿using BladeStory.Core.Components;
+using BladeStory.Core.Scenes;
 using Microsoft.Xna.Framework;
 
 namespace BladeStory.Service.Interfaces.Managers
@@ -10,7 +11,9 @@ namespace BladeStory.Service.Interfaces.Managers
      */
     public interface IEntityManager
     {
-        IEntity Spawn(string id, Vector2 position);
+        Scene CurrentScene { get; set; }
+
+        void Spawn(string id, Vector2 position);
 
         void Destroy(Guid id);
     }

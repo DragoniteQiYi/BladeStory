@@ -6,6 +6,7 @@ namespace BladeStory.Core.Tilemap
 {
     public class MapObject
     {
+        public required string Id { get; set; }
         public string? Name { get; set; }
         public string? Type { get; set; }
         public Vector2 Position { get; set; }

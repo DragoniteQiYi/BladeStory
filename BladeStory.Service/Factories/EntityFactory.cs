@@ -3,6 +3,7 @@ using BladeStory.Core.GameObjects;
 using BladeStory.Service.Interfaces.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BladeStory.Service.Factories
 {
@@ -17,7 +18,9 @@ namespace BladeStory.Service.Factories
 
         public Entity CreateEntity(EntityConfig entityConfig, Vector2 position)
         {
-            throw new NotImplementedException();
+            var name = entityConfig.Name;
+            var texture = _contentManager.Load<Texture2D>(entityConfig.Texture);
+            return new Entity(name, texture, position);
         }
     }
 }

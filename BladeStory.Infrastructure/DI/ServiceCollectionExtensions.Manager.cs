@@ -39,28 +39,27 @@ namespace BladeStory.Infrastructure.DI
                 var contentManager = sp.GetRequiredService<ContentManager>();
                 return new TileMapManager(graphicsDevice, contentManager);
             });
+            services.AddSingleton<IEntityManager>(sp =>
+            {
+                var entityFactory = sp.GetRequiredService<IEntityFactory>();
+                var configManager = sp.GetRequiredService<IConfigManager>();
+                return new EntityManager(entityFactory, configManager);
+            });
             services.AddSingleton<ISceneManager>(sp =>
             {
                 var configManager = sp.GetRequiredService<IConfigManager>();
                 var contentManager = sp.GetRequiredService<ContentManager>();
                 var sceneFactory = sp.GetRequiredService<ISceneFactory>();
                 var tiledMapRendererFactory = sp.GetRequiredService<ITiledMapRendererFactory>();
-                var gameObjectFactory = sp.GetRequiredService<IEntityFactory>();
                 var tileMapManager = sp.GetRequiredService<ITileMapManager>();
+                var entityManager = sp.GetRequiredService<IEntityManager>();
                 return new SceneManager(configManager, contentManager, sceneFactory, 
-                    tiledMapRendererFactory, gameObjectFactory, tileMapManager);
+                    tiledMapRendererFactory, tileMapManager, entityManager);
             });
             services.AddSingleton<ITimeManager>(sp =>
             {
                 var game = sp.GetRequiredService<Game>();
                 return new TimeManager(game);
-            });
-            services.AddSingleton<IEntityManager>(sp =>
-            {
-                var sceneManager = sp.GetRequiredService<ISceneManager>();
-                var entityFactory = sp.GetRequiredService<IEntityFactory>();
-                var configManager = sp.GetRequiredService<IConfigManager>();
-                return new EntityManager(sceneManager, entityFactory, configManager);
             });
 
             return services;

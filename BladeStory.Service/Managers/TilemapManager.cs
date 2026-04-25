@@ -125,10 +125,11 @@ namespace BladeStory.Service.Managers
         {
             var data = new MapObject
             {
+                Id = obj.Properties["Id"],
                 Name = obj.Name ?? "",
                 Type = obj.Type ?? "",
                 Position = obj.Position,
-                Properties = new Dictionary<string, string>()
+                Properties = []
             };
 
             // 复制属性
@@ -149,11 +150,6 @@ namespace BladeStory.Service.Managers
                     data.Kind = MapObjectKind.Ellipse;
                     data.Size = ellipse.Radius * 2; // 用直径作为Size
                     break;
-
-                //case TiledMapPointObject point:
-                //    data.Kind = MapObjectKind.Point;
-                //    data.Size = Vector2.Zero;
-                //    break;
 
                 case TiledMapPolygonObject polygon:
                     data.Kind = MapObjectKind.Polygon;

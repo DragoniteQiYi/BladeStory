@@ -53,6 +53,7 @@ namespace BladeStory.Core.GameObjects
 
         public Entity(Texture2D texture)
         {
+            Id = Guid.NewGuid();
             Sprite = new Sprite(texture);
             Transform = new Transform2(Vector2.Zero);
             Sprite.Origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
@@ -60,6 +61,16 @@ namespace BladeStory.Core.GameObjects
 
         public Entity(Texture2D texture, Vector2 position)
         {
+            Id = Guid.NewGuid();
+            Sprite = new Sprite(texture);
+            Transform = new Transform2(position);
+            Sprite.Origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
+        }
+
+        public Entity(string name, Texture2D texture, Vector2 position)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
             Sprite = new Sprite(texture);
             Transform = new Transform2(position);
             Sprite.Origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
