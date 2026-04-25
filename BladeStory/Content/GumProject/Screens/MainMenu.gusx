@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScreenSave xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>MainMenu</Name>
+  <State>
+    <Name>Default</Name>
+    <Variable Type="float" Name="Load Game.Width" SetsValue="true">
+      <Value xsi:type="xsd:float">320</Value>
+    </Variable>
+    <Variable Type="float" Name="Load Game.X" SetsValue="true">
+      <Value xsi:type="xsd:float">919</Value>
+    </Variable>
+    <Variable Type="float" Name="Load Game.Y" SetsValue="true">
+      <Value xsi:type="xsd:float">313</Value>
+    </Variable>
+    <Variable Type="float" Name="New Game.Width" SetsValue="true">
+      <Value xsi:type="xsd:float">320</Value>
+    </Variable>
+    <Variable Type="float" Name="New Game.X" SetsValue="true">
+      <Value xsi:type="xsd:float">920</Value>
+    </Variable>
+    <Variable Type="float" Name="New Game.Y" SetsValue="true">
+      <Value xsi:type="xsd:float">184</Value>
+    </Variable>
+    <Variable Type="float" Name="Quit Game.Width" SetsValue="true">
+      <Value xsi:type="xsd:float">320</Value>
+    </Variable>
+    <Variable Type="float" Name="Quit Game.X" SetsValue="true">
+      <Value xsi:type="xsd:float">914</Value>
+    </Variable>
+    <Variable Type="float" Name="Quit Game.Y" SetsValue="true">
+      <Value xsi:type="xsd:float">566</Value>
+    </Variable>
+    <Variable Type="float" Name="Settings.Width" SetsValue="true">
+      <Value xsi:type="xsd:float">320</Value>
+    </Variable>
+    <Variable Type="float" Name="Settings.X" SetsValue="true">
+      <Value xsi:type="xsd:float">915</Value>
+    </Variable>
+    <Variable Type="float" Name="Settings.Y" SetsValue="true">
+      <Value xsi:type="xsd:float">440</Value>
+    </Variable>
+    <Variable IsFont="true" Type="string" Name="Tittle.Font" SetsValue="true">
+      <Value xsi:type="xsd:string">G:\GameProjects\BladeStory\BladeStory\Content\Fonts\ChillBitmap_16px.ttf</Value>
+    </Variable>
+    <Variable Type="int" Name="Tittle.FontSize" SetsValue="true">
+      <Value xsi:type="xsd:int">128</Value>
+    </Variable>
+    <Variable Type="float" Name="Tittle.Height" SetsValue="true">
+      <Value xsi:type="xsd:float">198</Value>
+    </Variable>
+    <Variable Type="HorizontalAlignment" Name="Tittle.HorizontalAlignment" SetsValue="true">
+      <Value xsi:type="xsd:int">1</Value>
+    </Variable>
+    <Variable Type="bool" Name="Tittle.IsBold" SetsValue="true">
+      <Value xsi:type="xsd:boolean">false</Value>
+    </Variable>
+    <Variable Type="bool" Name="Tittle.IsItalic" SetsValue="true">
+      <Value xsi:type="xsd:boolean">false</Value>
+    </Variable>
+    <Variable Type="string" Name="Tittle.Text" SetsValue="true">
+      <Value xsi:type="xsd:string">Blade Story</Value>
+    </Variable>
+    <Variable Type="VerticalAlignment" Name="Tittle.VerticalAlignment" SetsValue="true">
+      <Value xsi:type="xsd:int">1</Value>
+    </Variable>
+    <Variable Type="float" Name="Tittle.Width" SetsValue="true">
+      <Value xsi:type="xsd:float">703</Value>
+    </Variable>
+    <Variable Type="float" Name="Tittle.X" SetsValue="true">
+      <Value xsi:type="xsd:float">42</Value>
+    </Variable>
+    <Variable Type="float" Name="Tittle.Y" SetsValue="true">
+      <Value xsi:type="xsd:float">42</Value>
+    </Variable>
+  </State>
+  <Instance Name="Tittle" BaseType="Text" />
+  <Instance Name="New Game" BaseType="Button" />
+  <Instance Name="Load Game" BaseType="Button" />
+  <Instance Name="Settings" BaseType="Button" />
+  <Instance Name="Quit Game" BaseType="Button" />
+  <Behaviors />
+</ScreenSave>

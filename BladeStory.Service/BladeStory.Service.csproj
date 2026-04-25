@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Gum.MonoGame" Version="2026.4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BladeStory.Configuration\BladeStory.Configuration.csproj" />
     <ProjectReference Include="..\BladeStory.Core\BladeStory.Core.csproj" />
     <ProjectReference Include="..\BladeStory.Utility\BladeStory.Utility.csproj" />

@@ -61,6 +61,11 @@ namespace BladeStory.Infrastructure.DI
                 var game = sp.GetRequiredService<Game>();
                 return new TimeManager(game);
             });
+            services.AddSingleton<IUIManager>(sp =>
+            {
+                var contentManager = sp.GetRequiredService<ContentManager>();
+                return new UIManager(contentManager);
+            });
 
             return services;
         }

@@ -1,13 +1,16 @@
 ﻿using BladeStory.Infrastructure.DI;
 using BladeStory.Service.Interfaces;
 using BladeStory.Service.Interfaces.Managers;
+using Gum.DataTypes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using MonoGame.Extended.BitmapFonts;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.ViewportAdapters;
+using MonoGameGum;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -28,6 +31,7 @@ namespace BladeStory
 
         const int SW_HIDE = 0;
         const int SW_SHOW = 5;
+        const string GUMPROJECT_PATH = "GumProject\\BladeStory.gumx";
 
         private SpriteBatch _spriteBatch;
         private TiledMap _map;
@@ -38,6 +42,8 @@ namespace BladeStory
         private IServiceProvider _serviceProvider;
         private BoxingViewportAdapter _viewportAdapter;
         private OrthographicCamera _camera;
+        private BitmapFont _font;
+        private GumService _gumService = GumService.Default;
 
         // 系统服务
         private ISceneManager _sceneManager;
@@ -76,6 +82,9 @@ namespace BladeStory
             // 3.获取必要服务
             GetRequiredServices();
 
+            // 4.基础配置
+            ConfigureBasics();
+
             foreach (var startable in _startables)
             {
                 startable.Initialize();
@@ -89,6 +98,7 @@ namespace BladeStory
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            _camera.Zoom = 0.5f;
 
             _sceneManager.LoadScene("Scenes/Town/Original");
 
@@ -116,11 +126,16 @@ namespace BladeStory
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
-            _spriteBatch.Begin();
+            
+            // 绘制Sprite
+            var viewMatrix = _camera.GetViewMatrix();
+            _spriteBatch.Begin(transformMatrix: viewMatrix);
             _tileMapManager.Draw(_camera);
             _sceneManager.Draw(_spriteBatch);
             _spriteBatch.End();
+
+            // 绘制UI
+            _gumService.Draw();
 
             base.Draw(gameTime);
         }
@@ -175,6 +190,23 @@ namespace BladeStory
             _tileMapManager = _serviceProvider.GetService<ITileMapManager>();
             _startables = _serviceProvider.GetServices<IStartable>();
             _updatables = _serviceProvider.GetServices<IUpdatable>();
+        }
+
+        private void ConfigureBasics()
+        {
+            _font = Content.Load<BitmapFont>("Fonts/BitmapFont");
+            _gumService.Initialize(this, GUMPROJECT_PATH);
+
+            _gumService.CanvasWidth = 1280;
+            _gumService.CanvasHeight = 720;
+
+            // Root 也匹配
+            _gumService.Root.Width = 0;
+            _gumService.Root.WidthUnits = DimensionUnitType.RelativeToParent;
+            _gumService.Root.Height = 0;
+            _gumService.Root.HeightUnits = DimensionUnitType.RelativeToParent;
+
+
         }
 
         protected override void Dispose(bool disposing)

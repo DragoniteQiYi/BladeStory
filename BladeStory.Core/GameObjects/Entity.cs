@@ -118,27 +118,5 @@ namespace BladeStory.Core.GameObjects
             }
             return Position;
         }
-
-        //public virtual Rectangle GetBounds()
-        //{
-        //    var bounds = Sprite.GetBoundingRectangle(Transform);
-        //    return new Rectangle(
-        //        (int)bounds.X,
-        //        (int)bounds.Y,
-        //        (int)bounds.Width,
-        //        (int)bounds.Height
-        //    );
-        //}
-
-        //public bool OnCollisionEnter(GameObject other)
-        //{
-        //    return GetBounds().Intersects(other.GetBounds());
-        //}
-
-
-        //public void OnCollision(CollisionEventArgs collisionInfo)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

@@ -11,6 +11,7 @@ namespace BladeStory.Infrastructure.DI
         {
             services.AddSingleton(sp => (IStartable)sp.GetRequiredService<ISceneManager>());
             services.AddSingleton(sp => (IStartable)sp.GetRequiredService<IEntityManager>());
+            services.AddSingleton(sp => (IStartable)sp.GetRequiredService<IUIManager>());
             
             return services;
         }
@@ -20,6 +21,7 @@ namespace BladeStory.Infrastructure.DI
             services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<IInputManager>());
             services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<ITimeManager>());
             services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<IInputStateMiddleware>());
+            services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<IUIManager>());
 
             return services;
         }
