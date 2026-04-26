@@ -1,7 +1,7 @@
 ﻿using BladeStory.Infrastructure.DI;
 using BladeStory.Service.Interfaces;
 using BladeStory.Service.Interfaces.Managers;
-using Gum.DataTypes;
+using FontStashSharp;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,9 +10,11 @@ using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.ViewportAdapters;
-using MonoGameGum;
+using Myra;
+using Myra.Graphics2D.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace BladeStory
@@ -31,10 +33,10 @@ namespace BladeStory
 
         const int SW_HIDE = 0;
         const int SW_SHOW = 5;
-        const string GUMPROJECT_PATH = "GumProject\\BladeStory.gumx";
 
         private SpriteBatch _spriteBatch;
         private TiledMap _map;
+        private SpriteFontBase _font;
 
         // 基础服务
         private readonly IServiceCollection _services;
@@ -42,8 +44,9 @@ namespace BladeStory
         private IServiceProvider _serviceProvider;
         private BoxingViewportAdapter _viewportAdapter;
         private OrthographicCamera _camera;
-        private BitmapFont _font;
-        private GumService _gumService = GumService.Default;
+        private BitmapFont _bitmapFont;
+        private Desktop _desktop;
+        private FontSystem _fontSystem;
 
         // 系统服务
         private ISceneManager _sceneManager;
@@ -59,7 +62,7 @@ namespace BladeStory
 #endif
             _services = services;
             _graphics = new GraphicsDeviceManager(this);
-
+            
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -98,7 +101,72 @@ namespace BladeStory
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _camera.Zoom = 0.5f;
+            MyraEnvironment.Game = this;
+
+            var grid = new Grid
+            {
+                RowSpacing = 8,
+                ColumnSpacing = 8
+            };
+
+            grid.ColumnsProportions.Add(new Proportion(ProportionType.Auto));
+            grid.ColumnsProportions.Add(new Proportion(ProportionType.Auto));
+            grid.RowsProportions.Add(new Proportion(ProportionType.Auto));
+            grid.RowsProportions.Add(new Proportion(ProportionType.Auto));
+
+            var helloWorld = new Label
+            {
+                Id = "label",
+                Font = _font,
+                Text = "Hello, World!啊啊啊"
+            };
+            grid.Widgets.Add(helloWorld);
+
+            // ComboBox
+            var combo = new ComboView();
+            Grid.SetColumn(combo, 1);
+            Grid.SetRow(combo, 0);
+
+            combo.Widgets.Add(new Label { Text = "Red红", TextColor = Color.Red });
+            combo.Widgets.Add(new Label { Text = "Green绿", TextColor = Color.Green });
+            combo.Widgets.Add(new Label { Text = "Blue蓝", TextColor = Color.Blue });
+
+            grid.Widgets.Add(combo);
+
+            // Button
+            var button = new Button
+            {
+                Content = new Label
+                {
+                    Text = "Show显示"
+                }
+            };
+            Grid.SetColumn(button, 0);
+            Grid.SetRow(button, 1);
+
+            button.Click += (s, a) =>
+            {
+                var messageBox = Dialog.CreateMessageBox("Message信息", "Some message!");
+                messageBox.ShowModal(_desktop);
+            };
+
+            grid.Widgets.Add(button);
+
+            // Spin button
+            var spinButton = new SpinButton
+            {
+                Width = 100,
+                Nullable = true
+            };
+            Grid.SetColumn(spinButton, 1);
+            Grid.SetRow(spinButton, 1);
+
+            grid.Widgets.Add(spinButton);
+
+            // Add it to the desktop
+            _desktop = new Desktop();
+            _desktop.Root = grid;
+
 
             _sceneManager.LoadScene("Scenes/Town/Original");
 
@@ -126,16 +194,21 @@ namespace BladeStory
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            
+
             // 绘制Sprite
             var viewMatrix = _camera.GetViewMatrix();
             _spriteBatch.Begin(transformMatrix: viewMatrix);
+
             _tileMapManager.Draw(_camera);
             _sceneManager.Draw(_spriteBatch);
+
+            // 绘制中文文本
+            // _spriteBatch.DrawString(_bitmapFont, "你好世界 Hello World!",
+            //  new Vector2(100, 100), Color.White);
+
             _spriteBatch.End();
 
-            // 绘制UI
-            _gumService.Draw();
+            _desktop.Render();
 
             base.Draw(gameTime);
         }
@@ -194,19 +267,13 @@ namespace BladeStory
 
         private void ConfigureBasics()
         {
-            _font = Content.Load<BitmapFont>("Fonts/BitmapFont");
-            _gumService.Initialize(this, GUMPROJECT_PATH);
+            _bitmapFont = Content.Load<BitmapFont>("Fonts/ChillBitmap");
+            _fontSystem = new FontSystem();
+            _fontSystem.AddFont(File.ReadAllBytes("Content\\Fonts\\ChillBitmap_16px.ttf"));
+            _font = _fontSystem.GetFont(16); // 16 像素大小
+            
 
-            _gumService.CanvasWidth = 1280;
-            _gumService.CanvasHeight = 720;
-
-            // Root 也匹配
-            _gumService.Root.Width = 0;
-            _gumService.Root.WidthUnits = DimensionUnitType.RelativeToParent;
-            _gumService.Root.Height = 0;
-            _gumService.Root.HeightUnits = DimensionUnitType.RelativeToParent;
-
-
+            Console.WriteLine(File.Exists("Content\\Fonts\\ChillBitmap_16px.ttf"));
         }
 
         protected override void Dispose(bool disposing)

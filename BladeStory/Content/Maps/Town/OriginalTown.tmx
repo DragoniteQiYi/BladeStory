@@ -31,10 +31,5 @@
    <property name="Name" value=""/>
    <property name="Sprite" value=""/>
   </properties>
-  <object id="5" name="Tux" x="272.727" y="240.273">
-   <properties>
-    <property name="Id" value="NPC/OriginalTown/Tux"/>
-   </properties>
-  </object>
  </objectgroup>
 </map>
