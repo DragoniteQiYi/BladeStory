@@ -14,6 +14,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Configs/Entity.json
+/copy:Configs/Entity.json
+
+#begin Configs/Scene.json
+/copy:Configs/Scene.json
+
 #begin Fonts/ChillBitmap_00.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -168,6 +174,18 @@
 /processor:TiledMapProcessor
 /build:Maps/Town/OriginalTown.tmx;Maps/Town/OriginalTown
 
+#begin Sprites/Static/0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Static/0.png;Sprites/Static/0
+
 #begin Sprites/Static/Tux.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -196,4 +214,7 @@
 /importer:TiledMapTilesetImporter
 /processor:TiledMapTilesetProcessor
 /build:Tiles/Field.tsx
+
+#begin UI/MainMenu.xmml
+/copy:UI/MainMenu.xmml
 

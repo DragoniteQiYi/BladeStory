@@ -1,0 +1,12 @@
+<Project>
+  <Project.ExportOptions Namespace="BladeStory.UI.Screen" Class="MainMenu" OutputPath="G:\GameProjects\BladeStory\BladeStory.UI\Screen" />
+  <Panel>
+    <Label Text="Blade Story" TextColor="#FFA500FF" HorizontalAlignment="Center" Scale="2, 2" />
+    <VerticalMenu HorizontalAlignment="Center" VerticalAlignment="Center" Scale="2, 2">
+      <MenuItem Text="New Game" Id="_menuNewGame" />
+      <MenuItem Text="Load Game" Id="_menuLoadGame" />
+      <MenuItem Text="Options" Id="_menuOptions" />
+      <MenuItem Text="Quit" Id="_menuQuit" />
+    </VerticalMenu>
+  </Panel>
+</Project>

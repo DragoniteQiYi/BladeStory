@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BladeStory.Gameplay\BladeStory.Gameplay.csproj" />
     <ProjectReference Include="..\BladeStory.Service\BladeStory.Service.csproj" />
   </ItemGroup>
 

@@ -3,7 +3,7 @@ using BladeStory.Core.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BladeStory.Gameplay.Exploration.Model
+namespace BladeStory.Gameplay.Exploration.Models
 {
     public class Player : Entity, IControllable, IMoveable, IInteractor
     {
@@ -11,6 +11,7 @@ namespace BladeStory.Gameplay.Exploration.Model
         public bool CanMove { get; private set; }
         public Vector2 Velocity { get; private set; }
         public bool InputEnabled { get; private set; }
+        public bool IsDashing { get; set; }
 
         public Player(Texture2D texture) : base(texture) { }
 
@@ -18,7 +19,14 @@ namespace BladeStory.Gameplay.Exploration.Model
 
         public override void Initialize()
         {
+
             base.Initialize();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+
+            base.Update(gameTime);
         }
 
         public void EnableInput(bool state)
@@ -41,9 +49,14 @@ namespace BladeStory.Gameplay.Exploration.Model
             throw new NotImplementedException();
         }
 
-        public void Interact(IInteractable target)
+        public void Interact()
         {
             throw new NotImplementedException();
+        }
+
+        public void InteractWith(IInteractable target)
+        {
+
         }
     }
 }

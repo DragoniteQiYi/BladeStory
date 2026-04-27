@@ -1,13 +1,22 @@
 {
+  "Scenes/Screen/MainMenu": {
+    "id": "Scenes/Screen/MainMenu",
+    "type": "screen",
+    "background": "Sprites/Static/0",
+    "tiledMap": "Maps/Town/OriginalTown",
+    "bgm": null
+  },
   "Scenes/Town/Original": {
     "id": "Scenes/Town/Original",
-    "type": "tiled",
+    "type": "screen",
+    "background": null,
     "tiledMap": "Maps/Town/OriginalTown",
     "bgm": null
   },
   "Scenes/Town/Central": {
     "id": "Scenes/Town/Central",
     "type": "tiled",
+    "background": null,
     "tiledMap": "Maps/Town/Central",
     "bgm": null
   }

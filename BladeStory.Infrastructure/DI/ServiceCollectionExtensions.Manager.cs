@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
+using Myra.Graphics2D.UI;
 
 namespace BladeStory.Infrastructure.DI
 {
@@ -53,8 +54,9 @@ namespace BladeStory.Infrastructure.DI
                 var tiledMapRendererFactory = sp.GetRequiredService<ITiledMapRendererFactory>();
                 var tileMapManager = sp.GetRequiredService<ITileMapManager>();
                 var entityManager = sp.GetRequiredService<IEntityManager>();
+                var backgroundManager = sp.GetRequiredService<IBackgroundManager>();
                 return new SceneManager(configManager, contentManager, sceneFactory, 
-                    tiledMapRendererFactory, tileMapManager, entityManager);
+                    tiledMapRendererFactory, tileMapManager, entityManager, backgroundManager);
             });
             services.AddSingleton<ITimeManager>(sp =>
             {
@@ -64,7 +66,14 @@ namespace BladeStory.Infrastructure.DI
             services.AddSingleton<IUIManager>(sp =>
             {
                 var contentManager = sp.GetRequiredService<ContentManager>();
-                return new UIManager(contentManager);
+                var desktop = sp.GetRequiredService<Desktop>();
+                return new UIManager(contentManager, desktop);
+            });
+            services.AddSingleton<IBackgroundManager>(sp =>
+            {
+                var contentManager = sp.GetRequiredService<ContentManager>();
+                var graphicsDevice = sp.GetRequiredService<GraphicsDevice>();
+                return new BackgroundManager(contentManager, graphicsDevice);
             });
 
             return services;

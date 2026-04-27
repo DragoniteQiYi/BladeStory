@@ -19,6 +19,7 @@ namespace BladeStory.Service.Managers
         private readonly ITiledMapRendererFactory _tiledMapRendererFactory;
         private readonly ITileMapManager _tileMapManager;
         private readonly IEntityManager _entityManager;
+        private readonly IBackgroundManager _backgroundManager;
 
         public Scene? CurrentScene 
         { 
@@ -31,7 +32,6 @@ namespace BladeStory.Service.Managers
 
         private bool _isTransitioning;
         private Scene? _currentScene;
-        private Dictionary<string, Scene> _scenes = [];
         private Dictionary<string, SceneConfig> _sceneConfigs = [];
 
         public SceneManager(IConfigManager configManager,
@@ -39,7 +39,8 @@ namespace BladeStory.Service.Managers
             ISceneFactory sceneFactory,
             ITiledMapRendererFactory tiledMapRendererFactory,
             ITileMapManager tileMapManager,
-            IEntityManager entityManager)
+            IEntityManager entityManager,
+            IBackgroundManager backgroundManager)
         {
             _configManager = configManager;
             _contentManager = contentManager;
@@ -47,6 +48,7 @@ namespace BladeStory.Service.Managers
             _tiledMapRendererFactory = tiledMapRendererFactory;
             _tileMapManager = tileMapManager;
             _entityManager = entityManager;
+            _backgroundManager = backgroundManager;
 
             Console.WriteLine($"[SceneManager]: 场景管理模块初始化成功");
         }
@@ -84,8 +86,15 @@ namespace BladeStory.Service.Managers
             _isTransitioning = true;
 
             var sceneConfig = _sceneConfigs[sceneId];
-            var type = _sceneConfigs[sceneId].Type;
-            var tiledMapId = _sceneConfigs[sceneId].TiledMap;
+            var type = sceneConfig.Type;
+            var tiledMapId = sceneConfig.TiledMap;
+            var backgroundId = sceneConfig.Background;
+
+            if (!string.IsNullOrEmpty(backgroundId))
+            {
+                _backgroundManager.LoadBackground(backgroundId);
+            }
+
         
             TiledMap map;
 
@@ -113,5 +122,7 @@ namespace BladeStory.Service.Managers
         {
 
         }
+
+
     }
 }

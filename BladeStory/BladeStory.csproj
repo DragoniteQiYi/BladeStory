@@ -46,6 +46,7 @@
   <ItemGroup>
     <Folder Include="Content\Scenes\Town\" />
     <Folder Include="Content\Scenes\Field\" />
+    <Folder Include="Content\UI\" />
   </ItemGroup>
 	<!-- 确保 GameSettings.json 被复制到输出目录 -->
 	<ItemGroup>

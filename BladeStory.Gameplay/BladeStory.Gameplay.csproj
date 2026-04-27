@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Battle\" />
+    <Folder Include="Exploration\Interfaces\" />
     <Folder Include="UI\" />
   </ItemGroup>
 
@@ -19,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BladeStory.Core\BladeStory.Core.csproj" />
+    <ProjectReference Include="..\BladeStory.Service\BladeStory.Service.csproj" />
   </ItemGroup>
 
 </Project>

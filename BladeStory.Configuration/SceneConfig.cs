@@ -9,6 +9,8 @@ namespace BladeStory.Configuration
 
         public SceneType Type { get; set; }
 
+        public string? Background { get; set; }
+
         public string? TiledMap { get; set; }
         
         public string? Bgm { get; set; }

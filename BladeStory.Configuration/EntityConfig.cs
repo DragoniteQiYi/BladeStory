@@ -7,8 +7,6 @@ namespace BladeStory.Configuration
     {
         public required string Name { get; set; }
 
-        public Vector2 Position { get; set; }
-
         public string? Texture { get; set; }
     }
 }

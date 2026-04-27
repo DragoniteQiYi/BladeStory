@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
-using MonoGame.Extended.Tiled;
 using MonoGame.Extended.ViewportAdapters;
 using Myra;
 using Myra.Graphics2D.UI;
@@ -35,8 +34,7 @@ namespace BladeStory
         const int SW_SHOW = 5;
 
         private SpriteBatch _spriteBatch;
-        private TiledMap _map;
-        private SpriteFontBase _font;
+
 
         // 基础服务
         private readonly IServiceCollection _services;
@@ -51,6 +49,7 @@ namespace BladeStory
         // 系统服务
         private ISceneManager _sceneManager;
         private ITileMapManager _tileMapManager;
+        private IBackgroundManager _backgroundManager;
         private IEnumerable<IStartable> _startables;
         private IEnumerable<IUpdatable> _updatables;
 
@@ -62,7 +61,8 @@ namespace BladeStory
 #endif
             _services = services;
             _graphics = new GraphicsDeviceManager(this);
-            
+            MyraEnvironment.Game = this;
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -93,6 +93,8 @@ namespace BladeStory
                 startable.Initialize();
             }
 
+            _sceneManager.LoadScene("Scenes/Screen/MainMenu");
+
             base.Initialize();
         }
 
@@ -101,76 +103,8 @@ namespace BladeStory
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            MyraEnvironment.Game = this;
-
-            var grid = new Grid
-            {
-                RowSpacing = 8,
-                ColumnSpacing = 8
-            };
-
-            grid.ColumnsProportions.Add(new Proportion(ProportionType.Auto));
-            grid.ColumnsProportions.Add(new Proportion(ProportionType.Auto));
-            grid.RowsProportions.Add(new Proportion(ProportionType.Auto));
-            grid.RowsProportions.Add(new Proportion(ProportionType.Auto));
-
-            var helloWorld = new Label
-            {
-                Id = "label",
-                Font = _font,
-                Text = "Hello, World!啊啊啊"
-            };
-            grid.Widgets.Add(helloWorld);
-
-            // ComboBox
-            var combo = new ComboView();
-            Grid.SetColumn(combo, 1);
-            Grid.SetRow(combo, 0);
-
-            combo.Widgets.Add(new Label { Text = "Red红", TextColor = Color.Red });
-            combo.Widgets.Add(new Label { Text = "Green绿", TextColor = Color.Green });
-            combo.Widgets.Add(new Label { Text = "Blue蓝", TextColor = Color.Blue });
-
-            grid.Widgets.Add(combo);
-
-            // Button
-            var button = new Button
-            {
-                Content = new Label
-                {
-                    Text = "Show显示"
-                }
-            };
-            Grid.SetColumn(button, 0);
-            Grid.SetRow(button, 1);
-
-            button.Click += (s, a) =>
-            {
-                var messageBox = Dialog.CreateMessageBox("Message信息", "Some message!");
-                messageBox.ShowModal(_desktop);
-            };
-
-            grid.Widgets.Add(button);
-
-            // Spin button
-            var spinButton = new SpinButton
-            {
-                Width = 100,
-                Nullable = true
-            };
-            Grid.SetColumn(spinButton, 1);
-            Grid.SetRow(spinButton, 1);
-
-            grid.Widgets.Add(spinButton);
-
-            // Add it to the desktop
-            _desktop = new Desktop();
-            _desktop.Root = grid;
-
-
-            _sceneManager.LoadScene("Scenes/Town/Original");
-
-            // _mapRenderer = new(GraphicsDevice, _map);
+            
+            
         }
 
         protected override void Update(GameTime gameTime)
@@ -194,17 +128,21 @@ namespace BladeStory
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            // === 1.绘制屏幕空间背景（不受相机移动影响） ===
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
+                               SamplerState.LinearClamp, null, null, null, null);
+            // 关键：这里不传入相机的变换矩阵（最后一个参数为 null）
 
-            // 绘制Sprite
+            _backgroundManager.Draw(_spriteBatch);
+            
+            _spriteBatch.End(); // 结束屏幕空间绘制
+
+            // 绘制相机相关
             var viewMatrix = _camera.GetViewMatrix();
             _spriteBatch.Begin(transformMatrix: viewMatrix);
 
             _tileMapManager.Draw(_camera);
             _sceneManager.Draw(_spriteBatch);
-
-            // 绘制中文文本
-            // _spriteBatch.DrawString(_bitmapFont, "你好世界 Hello World!",
-            //  new Vector2(100, 100), Color.White);
 
             _spriteBatch.End();
 
@@ -232,6 +170,7 @@ namespace BladeStory
                 360
             );
             _camera = new OrthographicCamera(_viewportAdapter);
+            _desktop = new();
 
             _services.AddSingleton<ViewportAdapter>(_viewportAdapter);
 
@@ -240,6 +179,8 @@ namespace BladeStory
 
             // 注册 Camera
             _services.AddSingleton(_camera);
+
+            _services.AddSingleton(_desktop);
 
             // 注册 ContentManager
             _services.AddSingleton(Content);
@@ -261,6 +202,7 @@ namespace BladeStory
         {
             _sceneManager = _serviceProvider.GetService<ISceneManager>();
             _tileMapManager = _serviceProvider.GetService<ITileMapManager>();
+            _backgroundManager = _serviceProvider.GetService<IBackgroundManager>();
             _startables = _serviceProvider.GetServices<IStartable>();
             _updatables = _serviceProvider.GetServices<IUpdatable>();
         }
@@ -270,10 +212,10 @@ namespace BladeStory
             _bitmapFont = Content.Load<BitmapFont>("Fonts/ChillBitmap");
             _fontSystem = new FontSystem();
             _fontSystem.AddFont(File.ReadAllBytes("Content\\Fonts\\ChillBitmap_16px.ttf"));
-            _font = _fontSystem.GetFont(16); // 16 像素大小
-            
 
+#if DEBUG
             Console.WriteLine(File.Exists("Content\\Fonts\\ChillBitmap_16px.ttf"));
+#endif
         }
 
         protected override void Dispose(bool disposing)

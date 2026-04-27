@@ -6,6 +6,6 @@
         /// 实体交互动作
         /// </summary>
         /// <param name="target"></param>
-        void Interact(IInteractable target);
+        void InteractWith(IInteractable target);
     }
 }

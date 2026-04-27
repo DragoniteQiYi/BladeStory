@@ -13,9 +13,9 @@ namespace BladeStory.Service.Middlewares
     {
         private readonly IInputStateMiddleware _inputState;
 
-        public event Action<ICommand>? OnMoveCommand;
-        public event Action<ICommand>? OnInteractCommand;
-        public event Action<ICommand>? OnDashCommand;
+        public event Action<MoveCommand>? OnMoveCommand;
+        public event Action<InteractCommand>? OnInteractCommand;
+        public event Action<DashCommand>? OnDashCommand;
 
         // 移动相关键位绑定（可配置）
         public Keys MoveUp { get; set; } = Keys.W;
