@@ -2,6 +2,8 @@
 using BladeStory.Service.Interfaces.Middlewares;
 using BladeStory.Service.Interfaces.Managers;
 using Microsoft.Extensions.DependencyInjection;
+using BladeStory.Gameplay.Exploration.Controllers;
+using BladeStory.Service.Middlewares;
 
 namespace BladeStory.Infrastructure.DI
 {
@@ -12,7 +14,8 @@ namespace BladeStory.Infrastructure.DI
             services.AddSingleton(sp => (IStartable)sp.GetRequiredService<ISceneManager>());
             services.AddSingleton(sp => (IStartable)sp.GetRequiredService<IEntityManager>());
             services.AddSingleton(sp => (IStartable)sp.GetRequiredService<IUIManager>());
-            
+            services.AddSingleton(sp => (IStartable)sp.GetRequiredService<PlayerController>());
+
             return services;
         }
 
@@ -21,7 +24,9 @@ namespace BladeStory.Infrastructure.DI
             services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<IInputManager>());
             services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<ITimeManager>());
             services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<IInputStateMiddleware>());
+            services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<PlayerCommandMiddleware>());
             services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<IUIManager>());
+            services.AddSingleton(sp => (IUpdatable)sp.GetRequiredService<ISceneManager>());
 
             return services;
         }

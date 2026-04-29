@@ -40,7 +40,7 @@ namespace BladeStory.Service.Managers
             _contentManager = contentManager;
         }
 
-        public TiledMap LoadMap(string? mapPath)
+        public void LoadMap(string? mapPath)
         {
             // 卸载旧地图
             UnloadMap();
@@ -60,8 +60,6 @@ namespace BladeStory.Service.Managers
             Console.WriteLine($"尺寸: {Width}x{Height} 瓦片");
             Console.WriteLine($"对象总数: {_allObjects.Count}");
             Console.WriteLine($"对象层数: {GetObjectLayerNames().Length}");
-
-            return _tiledMap;
         }
 
         public void UnloadMap()

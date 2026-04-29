@@ -23,8 +23,15 @@ namespace BladeStory.Service.Managers
             _currentBackground = _contentManager.Load<Texture2D>(backgroundId);
         }
 
+        public void ClearBackground()
+        {
+            _currentBackground = null;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (_currentBackground == null) return;
+
             // 获取当前屏幕（窗口）尺寸
             int screenWidth = _graphicsDevice.Viewport.Width;
             int screenHeight = _graphicsDevice.Viewport.Height;

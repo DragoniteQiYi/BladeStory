@@ -86,9 +86,6 @@ namespace BladeStory.Service.Managers
                 if (!previousKeySet.Contains(key))
                 {
                     OnKeyPressed(new KeyboardEventArgs(key, CurrentKeyboardState));
-#if DEBUG
-                    Console.WriteLine($"[InputManager]: 键盘{key}键被按下");
-#endif
                 }
             }
 
@@ -99,9 +96,6 @@ namespace BladeStory.Service.Managers
                 if (!currentKeySet.Contains(key))
                 {
                     OnKeyReleased(new KeyboardEventArgs(key, CurrentKeyboardState));
-#if DEBUG
-                    Console.WriteLine($"[InputManager]: 键盘{key}键被释放");
-#endif
                 }
             }
         }
@@ -145,7 +139,6 @@ namespace BladeStory.Service.Managers
                     PreviousMouseState,
                     CurrentMouseState);
                 OnMouseScrolled(args);
-                Console.WriteLine($"[InputManager]: 鼠标滚轮操作");
             }
         }
 
@@ -160,7 +153,6 @@ namespace BladeStory.Service.Managers
                     CurrentMouseState,
                     button);
                 OnMouseButtonPressed(args);
-                Console.WriteLine($"[InputManager]: 鼠标{button}键被按下");
             }
             else if (current == ButtonState.Released && previous == ButtonState.Pressed)
             {
@@ -171,7 +163,6 @@ namespace BladeStory.Service.Managers
                     CurrentMouseState,
                     button);
                 OnMouseButtonReleased(args);
-                Console.WriteLine($"[InputManager]: 鼠标{button}键被释放");
             }
         }
 

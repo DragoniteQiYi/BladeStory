@@ -14,6 +14,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Audio/Music/MainMenu.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/MainMenu.wav;Audio/Music/MainMenu
+
 #begin Configs/Entity.json
 /copy:Configs/Entity.json
 
@@ -174,6 +180,18 @@
 /processor:TiledMapProcessor
 /build:Maps/Town/OriginalTown.tmx;Maps/Town/OriginalTown
 
+#begin Sprites/Characters/Hero.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Characters/Hero.png
+
 #begin Sprites/Static/0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -214,7 +232,4 @@
 /importer:TiledMapTilesetImporter
 /processor:TiledMapTilesetProcessor
 /build:Tiles/Field.tsx
-
-#begin UI/MainMenu.xmml
-/copy:UI/MainMenu.xmml
 

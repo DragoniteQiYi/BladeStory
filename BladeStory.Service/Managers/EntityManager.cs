@@ -1,4 +1,5 @@
 ﻿using BladeStory.Configuration;
+using BladeStory.Core.GameObjects;
 using BladeStory.Core.Scenes;
 using BladeStory.Service.Interfaces;
 using BladeStory.Service.Interfaces.Factories;
@@ -17,9 +18,9 @@ namespace BladeStory.Service.Managers
         private readonly IConfigManager _configManager;
 
         private Dictionary<string, EntityConfig> _entityConfigs = [];
-        private Scene _currentScene;
+        private Scene? _currentScene;
         
-        public Scene CurrentScene 
+        public Scene? CurrentScene 
         { 
             get => _currentScene; 
             set => _currentScene = value; 
@@ -40,15 +41,29 @@ namespace BladeStory.Service.Managers
         public void Spawn(string id, Vector2 position)
         {
             var entity = _entityFactory.CreateEntity(_entityConfigs[id], position);
-            _currentScene.GameObjects.Add(entity);
+            _currentScene?.Entities.Add(entity);
+            entity.Initialize();
+        }
+
+        public void Spawn(Entity entity)
+        {
+            _currentScene?.Entities.Add(entity);
+            entity.Initialize();
         }
 
         public void Destroy(Guid id)
         {
-            var entity = _currentScene.GameObjects
+            var entity = _currentScene?.Entities
                 .FirstOrDefault(x => x.Id == id);
+            if (entity == null)
+            {
+#if DEBUG
+                Console.WriteLine($"[EntityManager]: 未找到实体{id}");
+#endif
+                return;
+            }
 
-            _currentScene.GameObjects.Remove(entity);
+            _currentScene?.Entities.Remove(entity);
         }
 
         private void LoadConfig()

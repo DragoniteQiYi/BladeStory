@@ -6,6 +6,8 @@ namespace BladeStory.Service.Interfaces.Managers
     {
         void LoadBackground(string backgroundId);
 
+        void ClearBackground();
+
         void Draw(SpriteBatch spriteBatch);
     }
 }

@@ -13,9 +13,7 @@ namespace BladeStory.Service.Middlewares
     {
         private readonly IInputStateMiddleware _inputState;
 
-        public event Action<MoveCommand>? OnMoveCommand;
-        public event Action<InteractCommand>? OnInteractCommand;
-        public event Action<DashCommand>? OnDashCommand;
+        public event Action<ICommand>? OnCommandSpawned;
 
         // 移动相关键位绑定（可配置）
         public Keys MoveUp { get; set; } = Keys.W;
@@ -70,7 +68,7 @@ namespace BladeStory.Service.Middlewares
                     MoveDirection = Vector2.Zero
                 };
 
-            OnMoveCommand?.Invoke(command);
+            OnCommandSpawned?.Invoke(command);
         }
 
         private void ProcessInteractCommand(GameTime gameTime)
@@ -87,7 +85,7 @@ namespace BladeStory.Service.Middlewares
                     GameTime = gameTime, 
                     MousePosition = _inputState.MousePosition 
                 };
-                OnInteractCommand?.Invoke(command);
+                OnCommandSpawned?.Invoke(command);
             }
         }
 
@@ -101,7 +99,7 @@ namespace BladeStory.Service.Middlewares
                 GameTime = gameTime,
                 IsDashing = currentDashKeyDown
             };
-            OnDashCommand?.Invoke(command);
+            OnCommandSpawned?.Invoke(command);
         }
 
         /// <summary>
@@ -119,9 +117,7 @@ namespace BladeStory.Service.Middlewares
 
         public void Dispose()
         {
-            OnMoveCommand = null;
-            OnInteractCommand = null;
-            OnDashCommand = null;
+            OnCommandSpawned = null;
         }
     }
 }

@@ -11,7 +11,7 @@ using MonoGame.Extended.Tiled;
 
 namespace BladeStory.Service.Managers
 {
-    public class SceneManager : ISceneManager, IStartable
+    public class SceneManager : ISceneManager, IStartable, IUpdatable
     {
         private readonly IConfigManager _configManager;
         private readonly ContentManager _contentManager;
@@ -20,15 +20,17 @@ namespace BladeStory.Service.Managers
         private readonly ITileMapManager _tileMapManager;
         private readonly IEntityManager _entityManager;
         private readonly IBackgroundManager _backgroundManager;
+        private readonly IAudioManager _audioManager;
+        private readonly IAssetManager _assetManager;
 
         public Scene? CurrentScene 
         { 
             get => _currentScene;
-            private set { } 
+            private set => _currentScene = value;
         }
 
-        public event Action<Scene?>? OnSceneLoaded;
-        public event Action<Scene>? OnSceneUnloaded;
+        public event Action<SceneConfig>? OnSceneLoad;
+        public event Action<SceneConfig>? OnSceneUnload;
 
         private bool _isTransitioning;
         private Scene? _currentScene;
@@ -40,7 +42,9 @@ namespace BladeStory.Service.Managers
             ITiledMapRendererFactory tiledMapRendererFactory,
             ITileMapManager tileMapManager,
             IEntityManager entityManager,
-            IBackgroundManager backgroundManager)
+            IBackgroundManager backgroundManager,
+            IAudioManager audioManager,
+            IAssetManager assetManager)
         {
             _configManager = configManager;
             _contentManager = contentManager;
@@ -49,6 +53,8 @@ namespace BladeStory.Service.Managers
             _tileMapManager = tileMapManager;
             _entityManager = entityManager;
             _backgroundManager = backgroundManager;
+            _audioManager = audioManager;
+            _assetManager = assetManager;
 
             Console.WriteLine($"[SceneManager]: 场景管理模块初始化成功");
         }
@@ -81,41 +87,74 @@ namespace BladeStory.Service.Managers
         {
             if (_isTransitioning) return;
 
-            _tileMapManager.UnloadMap();
-            CurrentScene?.UnloadContent();
+            if (!_sceneConfigs.TryGetValue(sceneId, out var sceneConfig))
+            {
+#if DEBUG
+                Console.WriteLine($"[SceneManager]: 未找到场景配置: {sceneId}");
+#endif
+                return;
+            }
+
+            var previousScene = _currentScene;
             _isTransitioning = true;
 
-            var sceneConfig = _sceneConfigs[sceneId];
-            var type = sceneConfig.Type;
-            var tiledMapId = sceneConfig.TiledMap;
-            var backgroundId = sceneConfig.Background;
-
-            if (!string.IsNullOrEmpty(backgroundId))
+            try
             {
-                _backgroundManager.LoadBackground(backgroundId);
-            }
-
-        
-            TiledMap map;
-
-            if (type == SceneType.Tiled)
-            {
-                map = _tileMapManager.LoadMap(tiledMapId);
-                _currentScene = _sceneFactory.CreateScene(sceneConfig);
-
-                _entityManager.CurrentScene = _currentScene;
-
-                // 生成地图实体
-                var mapObjects = _tileMapManager.AllObjects;
-                foreach (var mapObject in mapObjects)
+                _tileMapManager.UnloadMap();
+                previousScene?.UnloadContent();
+                if (previousScene != null)
                 {
-                    _entityManager.Spawn(mapObject.Id, mapObject.Position);
+                    OnSceneUnload?.Invoke(_sceneConfigs[previousScene.Id]);
                 }
-            }
+                
+                var type = sceneConfig.Type;
+                var tiledMapId = sceneConfig.TiledMap;
+                var backgroundId = sceneConfig.Background;
 
-            _currentScene?.LoadContent(_contentManager);
-            OnSceneLoaded?.Invoke(_currentScene);
-            _isTransitioning = false;
+                if (!string.IsNullOrEmpty(backgroundId))
+                {
+                    _backgroundManager.LoadBackground(backgroundId);
+                }
+                else
+                {
+                    _backgroundManager.ClearBackground();
+                }
+
+                if (type == SceneType.Tiled)
+                {
+                    _currentScene = _sceneFactory.CreateScene(sceneConfig);
+                    _tileMapManager.LoadMap(tiledMapId);
+
+                    _entityManager.CurrentScene = _currentScene;
+
+                    // 生成地图实体
+                    var mapObjects = _tileMapManager.AllObjects;
+                    foreach (var mapObject in mapObjects)
+                    {
+                        _entityManager.Spawn(mapObject.Id, mapObject.Position);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(sceneConfig.Bgm))
+                {
+
+                    _audioManager.PlayMusic(sceneConfig.Bgm);
+                }
+
+                _currentScene?.LoadContent(_contentManager);
+                OnSceneLoad?.Invoke(sceneConfig);
+                _isTransitioning = false;
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Console.WriteLine($"[SceneManager]: 加载场景失败 - {ex.Message}");
+#endif
+            }
+            finally
+            {
+                _isTransitioning = false;
+            }
         }
 
         public void LoadSceneAsync(string sceneId, Action<Scene> onComplete)

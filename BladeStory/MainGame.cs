@@ -190,6 +190,7 @@ namespace BladeStory
             _services.AddFactories();
             _services.AddGameManagers();
             _services.AddMiddlewares();
+            _services.AddControllers();
             _services.AddStartable();
             _services.AddUpdatable();
 

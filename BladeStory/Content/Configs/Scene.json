@@ -4,11 +4,11 @@
     "type": "screen",
     "background": "Sprites/Static/0",
     "tiledMap": "Maps/Town/OriginalTown",
-    "bgm": null
+    "bgm": "Audio/Music/MainMenu"
   },
   "Scenes/Town/Original": {
     "id": "Scenes/Town/Original",
-    "type": "screen",
+    "type": "tiled",
     "background": null,
     "tiledMap": "Maps/Town/OriginalTown",
     "bgm": null

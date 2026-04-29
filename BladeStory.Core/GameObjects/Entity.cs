@@ -23,8 +23,8 @@ namespace BladeStory.Core.GameObjects
         public Transform2 Transform { get; set; }
         public Sprite Sprite { get; set; }
 
-        public Entity? Parent { get; set; }
-        public List<Entity> Children { get; private set; } = [];
+        //public Entity? Parent { get; set; }
+        //public List<Entity> Children { get; private set; } = [];
 
         // 使用 Transform2 管理变换
         public Vector2 Position
@@ -82,10 +82,6 @@ namespace BladeStory.Core.GameObjects
         {
             if (!IsActive) return;
 
-            foreach (var child in Children)
-            {
-                child?.Update(gameTime);
-            }
         }
 
         public virtual void LoadContent() { }
@@ -95,12 +91,7 @@ namespace BladeStory.Core.GameObjects
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (!IsActive || !IsVisible) return;
-            // 同步变换到 Sprite
-            foreach (var child in Children)
-            {
-                child?.Draw(spriteBatch);
-            }
-
+            
             spriteBatch.Draw(Sprite, Transform.Position);
         }
 
@@ -112,10 +103,7 @@ namespace BladeStory.Core.GameObjects
 
         public Vector2 GetWorldPosition()
         {
-            if (Parent != null)
-            {
-                return Parent.GetWorldPosition() + Position;
-            }
+
             return Position;
         }
     }

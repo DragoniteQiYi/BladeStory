@@ -16,26 +16,26 @@ namespace BladeStory.Core.Scenes
 
         public string Id { get; } = sceneConfig.Id;
 
-        public List<Entity> GameObjects { get; } = [];
+        public List<Entity> Entities { get; } = [];
 
         public virtual void LoadContent(ContentManager contentManager) 
         {
-            foreach (var obj in GameObjects)
-                obj.LoadContent();
+            foreach (var entity in Entities)
+                entity.LoadContent();
         }
 
         public virtual void UnloadContent() { }
 
         public virtual void Update(GameTime gameTime)
         {
-            foreach (var obj in GameObjects)
-                obj.Update(gameTime);
+            foreach (var entity in Entities)
+                entity.Update(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var obj in GameObjects)
-                obj.Draw(spriteBatch);
+            foreach (var entity in Entities)
+                entity.Draw(spriteBatch);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace BladeStory.Service.Interfaces.Managers
         Vector2 MapSize { get; }
 
         // 加载与卸载
-        TiledMap LoadMap(string? mapPath);
+        void LoadMap(string? mapPath);
         void UnloadMap();
         bool IsLoaded { get; }
 

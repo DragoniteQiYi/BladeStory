@@ -55,8 +55,11 @@ namespace BladeStory.Infrastructure.DI
                 var tileMapManager = sp.GetRequiredService<ITileMapManager>();
                 var entityManager = sp.GetRequiredService<IEntityManager>();
                 var backgroundManager = sp.GetRequiredService<IBackgroundManager>();
-                return new SceneManager(configManager, contentManager, sceneFactory, 
-                    tiledMapRendererFactory, tileMapManager, entityManager, backgroundManager);
+                var audioManager = sp.GetRequiredService<IAudioManager>();
+                var assetManager = sp.GetRequiredService<IAssetManager>();
+                return new SceneManager(configManager, contentManager, sceneFactory,
+                    tiledMapRendererFactory, tileMapManager, entityManager, backgroundManager,
+                    audioManager, assetManager);
             });
             services.AddSingleton<ITimeManager>(sp =>
             {
@@ -66,14 +69,20 @@ namespace BladeStory.Infrastructure.DI
             services.AddSingleton<IUIManager>(sp =>
             {
                 var contentManager = sp.GetRequiredService<ContentManager>();
+                var sceneManager = sp.GetRequiredService<ISceneManager>();
                 var desktop = sp.GetRequiredService<Desktop>();
-                return new UIManager(contentManager, desktop);
+                return new UIManager(contentManager, sceneManager, desktop);
             });
             services.AddSingleton<IBackgroundManager>(sp =>
             {
                 var contentManager = sp.GetRequiredService<ContentManager>();
                 var graphicsDevice = sp.GetRequiredService<GraphicsDevice>();
                 return new BackgroundManager(contentManager, graphicsDevice);
+            });
+            services.AddSingleton<IAudioManager>(sp =>
+            {
+                var assetManager = sp.GetRequiredService<IAssetManager>();
+                return new AudioManager(assetManager);
             });
 
             return services;

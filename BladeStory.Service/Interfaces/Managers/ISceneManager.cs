@@ -1,4 +1,5 @@
-﻿using BladeStory.Core.Scenes;
+﻿using BladeStory.Configuration;
+using BladeStory.Core.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,8 +9,8 @@ namespace BladeStory.Service.Interfaces.Managers
     {
         Scene? CurrentScene { get; }
 
-        event Action<Scene?> OnSceneLoaded;
-        event Action<Scene> OnSceneUnloaded;
+        event Action<SceneConfig> OnSceneLoad;
+        event Action<SceneConfig> OnSceneUnload;
 
         void Update(GameTime gameTime);
 

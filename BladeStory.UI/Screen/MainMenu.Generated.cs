@@ -30,7 +30,7 @@ namespace BladeStory.UI.Screen
 			label1.Text = "Blade Story";
 			label1.TextColor = Color.Orange;
 			label1.HorizontalAlignment = Myra.Graphics2D.UI.HorizontalAlignment.Center;
-			label1.Scale = new Vector2(2, 2);
+			label1.Scale = new Vector2(4, 4);
 
 			_menuNewGame = new MenuItem();
 			_menuNewGame.Text = "New Game";
