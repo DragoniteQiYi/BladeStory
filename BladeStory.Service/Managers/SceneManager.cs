@@ -95,16 +95,19 @@ namespace BladeStory.Service.Managers
                 return;
             }
 
-            var previousScene = _currentScene;
             _isTransitioning = true;
 
             try
             {
-                _tileMapManager.UnloadMap();
-                previousScene?.UnloadContent();
-                if (previousScene != null)
+                Scene previousScene = _currentScene;
+                SceneConfig previousSceneConfig;
+                if (_currentScene != null)
                 {
-                    OnSceneUnload?.Invoke(_sceneConfigs[previousScene.Id]);
+                    previousScene = _currentScene;
+                    _sceneConfigs.TryGetValue(previousScene.Id, out previousSceneConfig);
+                    _tileMapManager.UnloadMap();
+                    previousScene?.UnloadContent();
+                    OnSceneUnload?.Invoke(previousSceneConfig);
                 }
                 
                 var type = sceneConfig.Type;
@@ -137,8 +140,19 @@ namespace BladeStory.Service.Managers
 
                 if (!string.IsNullOrEmpty(sceneConfig.Bgm))
                 {
-
-                    _audioManager.PlayMusic(sceneConfig.Bgm);
+                    if (!string.IsNullOrEmpty(_audioManager.PlayingMusicId)
+                        && !_audioManager.PlayingMusicId.Equals(sceneConfig.Bgm))
+                    {
+                        _audioManager.PlayMusic(sceneConfig.Bgm);
+                    }
+                    else if (!_audioManager.IsMusicPlaying)
+                    {
+                        _audioManager.PlayMusic(sceneConfig.Bgm);
+                    }
+                }
+                else
+                {
+                    _audioManager.StopMusic();
                 }
 
                 _currentScene?.LoadContent(_contentManager);

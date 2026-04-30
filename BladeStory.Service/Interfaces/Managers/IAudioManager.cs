@@ -2,6 +2,10 @@
 {
     public interface IAudioManager
     {
+        bool IsMusicPlaying { get; }
+
+        string? PlayingMusicId { get; }
+
         void PlayMusic(string musicId);
 
         void PlaySoundEffect(string soundEffectId);

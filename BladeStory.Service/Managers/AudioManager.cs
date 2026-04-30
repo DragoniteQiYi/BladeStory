@@ -7,6 +7,9 @@ namespace BladeStory.Service.Managers
     {
         private readonly IAssetManager _assetManager;
 
+        public bool IsMusicPlaying { get; private set; }
+        public string? PlayingMusicId { get; private set; }
+
         private Song? _currentPlayingMusic;
 
         public AudioManager(IAssetManager assetManager)
@@ -26,6 +29,8 @@ namespace BladeStory.Service.Managers
             // 需要配置
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_currentPlayingMusic);
+            IsMusicPlaying = true;
+            PlayingMusicId = musicId;
         }
 
         public void PlaySoundEffect(string soundEffectId)
@@ -47,6 +52,8 @@ namespace BladeStory.Service.Managers
         {
             MediaPlayer.Stop();
             _currentPlayingMusic = null;
+            IsMusicPlaying = false;
+            PlayingMusicId = string.Empty;
         }
     }
 }
