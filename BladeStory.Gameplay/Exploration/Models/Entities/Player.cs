@@ -3,24 +3,41 @@ using BladeStory.Core.Components;
 using BladeStory.Core.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
+using MonoGame.Extended.Collisions;
 
-namespace BladeStory.Gameplay.Exploration.Models
+namespace BladeStory.Gameplay.Exploration.Models.Entities
 {
     public class Player : Entity, IControllable, IMoveable, IInteractor
     {
         private const float MOVE_SPEED = 200f;
-        private const float ACCELERATION = 12f;
-        private const float DECELERATION = 8f;
 
         public float Speed { get; private set; }
         public bool CanMove { get; private set; } = true;
         public Vector2 Velocity { get; private set; }
         public bool InputEnabled { get; private set; } = true;
         public bool IsDashing { get; set; }
+        public override IShapeF? Bounds { get; protected set; }
+        public override string LayerName { get; set; } = "default";
 
-        public Player(Texture2D texture) : base(texture) { }
+        public Player(Texture2D texture) : base(texture) 
+        {
+            _boundsOffset = new(-8f, -8f);
+            _boundsWidth = 15f;
+            _boundsHeight = 15f;
 
-        public Player(Texture2D texture, Vector2 position) : base(texture, position) { }
+            Bounds = new RectangleF(_boundsOffset.X, _boundsOffset.Y, _boundsWidth, _boundsHeight);
+        }
+
+        public Player(Texture2D texture, Vector2 position) : base(texture, position) 
+        {
+            _boundsOffset = new(-8f, -8f);
+            _boundsWidth = 15f;
+            _boundsHeight = 15f;
+
+            Vector2 basePoint = position + _boundsOffset;
+            Bounds = new RectangleF(basePoint.X, basePoint.Y, _boundsWidth, _boundsHeight);
+        }
 
         public override void Initialize()
         {
@@ -38,7 +55,14 @@ namespace BladeStory.Gameplay.Exploration.Models
                 Position += Velocity * deltaTime;
             }
 
+            Bounds.Position = Position + _boundsOffset;
             base.Update(gameTime);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Red, 1);
+            base.Draw(spriteBatch);
         }
 
         public void EnableInput(bool state)
@@ -76,19 +100,11 @@ namespace BladeStory.Gameplay.Exploration.Models
                 // 有输入时，平滑加速到目标速度
                 direction.Normalize();
                 float currentSpeed = IsDashing ? Speed * 2f : Speed;
-                Vector2 targetVelocity = direction * currentSpeed;
-                Velocity = Vector2.Lerp(Velocity, targetVelocity, ACCELERATION * 0.016f);
+                Velocity = direction * currentSpeed;
             }
             else
             {
-                // 无输入时，平滑减速到0
-                Velocity = Vector2.Lerp(Velocity, Vector2.Zero, DECELERATION * 0.016f);
-
-                // 速度很小时直接归零
-                if (Velocity.Length() < 0.5f)
-                {
-                    Velocity = Vector2.Zero;
-                }
+                Velocity = Vector2.Zero;
             }
         }
 
@@ -115,6 +131,13 @@ namespace BladeStory.Gameplay.Exploration.Models
         public void InteractWith(IInteractable target)
         {
 
+        }
+
+        public override void OnCollision(CollisionEventArgs collisionInfo)
+        {
+            Velocity = new Vector2(0, 0);
+            Bounds.Position -= collisionInfo.PenetrationVector;
+            Position -= collisionInfo.PenetrationVector;
         }
     }
 }

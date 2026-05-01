@@ -20,7 +20,10 @@ namespace BladeStory.Service.Factories
         {
             var name = entityConfig.Name;
             var texture = _contentManager.Load<Texture2D>(entityConfig.Texture);
-            return new Entity(name, texture, position);
+            var boundsOffset = entityConfig.BoundsOffset;
+            var width = entityConfig.Width;
+            var height = entityConfig.Height;
+            return new Entity(name, texture, position, boundsOffset, width, height);
         }
     }
 }

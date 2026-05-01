@@ -1,7 +1,7 @@
 ﻿using BladeStory.Configuration;
 using BladeStory.Constant;
 using BladeStory.Core.Components;
-using BladeStory.Gameplay.Exploration.Models;
+using BladeStory.Gameplay.Exploration.Models.Entities;
 using BladeStory.Service.Interfaces;
 using BladeStory.Service.Interfaces.Managers;
 using BladeStory.Service.Middlewares;

@@ -26,7 +26,6 @@ namespace BladeStory.Service.Managers
             if (_songs.TryGetValue(id, out var song))
                 return song;
 
-            Console.WriteLine($"ERROR-[AssetManager]: 找不到Id为: {id} 的音乐");
             return null;
         }
 

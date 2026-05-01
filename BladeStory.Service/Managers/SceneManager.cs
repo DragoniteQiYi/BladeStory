@@ -125,9 +125,10 @@ namespace BladeStory.Service.Managers
 
                 if (type == SceneType.Tiled)
                 {
-                    _currentScene = _sceneFactory.CreateScene(sceneConfig);
                     _tileMapManager.LoadMap(tiledMapId);
-
+                    _currentScene = _sceneFactory.CreateScene(sceneConfig, 
+                        _tileMapManager.Width * _tileMapManager.TileWidth,
+                        _tileMapManager.Height * _tileMapManager.TileHeight);
                     _entityManager.CurrentScene = _currentScene;
 
                     // 生成地图实体
@@ -138,22 +139,7 @@ namespace BladeStory.Service.Managers
                     }
                 }
 
-                if (!string.IsNullOrEmpty(sceneConfig.Bgm))
-                {
-                    if (!string.IsNullOrEmpty(_audioManager.PlayingMusicId)
-                        && !_audioManager.PlayingMusicId.Equals(sceneConfig.Bgm))
-                    {
-                        _audioManager.PlayMusic(sceneConfig.Bgm);
-                    }
-                    else if (!_audioManager.IsMusicPlaying)
-                    {
-                        _audioManager.PlayMusic(sceneConfig.Bgm);
-                    }
-                }
-                else
-                {
-                    _audioManager.StopMusic();
-                }
+                HandleMusicPlaying(sceneConfig.Bgm);
 
                 _currentScene?.LoadContent(_contentManager);
                 OnSceneLoad?.Invoke(sceneConfig);
@@ -176,6 +162,24 @@ namespace BladeStory.Service.Managers
 
         }
 
-
+        private void HandleMusicPlaying(string? bgmId)
+        {
+            if (!string.IsNullOrEmpty(bgmId))
+            {
+                if (!string.IsNullOrEmpty(_audioManager.PlayingMusicId)
+                    && !_audioManager.PlayingMusicId.Equals(bgmId))
+                {
+                    _audioManager.PlayMusic(bgmId);
+                }
+                else if (!_audioManager.IsMusicPlaying)
+                {
+                    _audioManager.PlayMusic(bgmId);
+                }
+            }
+            else
+            {
+                _audioManager.StopMusic();
+            }
+        }
     }
 }

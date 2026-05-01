@@ -1,6 +1,16 @@
 {
   "NPC/OriginalTown/Tux": {
     "name": "Linux夜鹭",
-    "texture": "Sprites/Static/Tux" 
+    "texture": "Sprites/Static/Tux"
+  },
+  "Pickups/Seed": {
+    "name": "测试用的种子",
+    "texture": "Sprites/Pickups/Seed",
+    "boundsOffset": {
+      "x": -8,
+      "y": -8
+    },
+    "width": 15,
+    "height": 15
   }
 }

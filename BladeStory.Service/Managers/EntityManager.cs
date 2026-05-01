@@ -41,13 +41,13 @@ namespace BladeStory.Service.Managers
         public void Spawn(string id, Vector2 position)
         {
             var entity = _entityFactory.CreateEntity(_entityConfigs[id], position);
-            _currentScene?.Entities.Add(entity);
+            _currentScene?.AddEntity(entity);
             entity.Initialize();
         }
 
         public void Spawn(Entity entity)
         {
-            _currentScene?.Entities.Add(entity);
+            _currentScene?.AddEntity(entity);
             entity.Initialize();
         }
 

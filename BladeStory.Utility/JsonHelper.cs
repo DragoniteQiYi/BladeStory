@@ -11,7 +11,8 @@ namespace BladeStory.Utility
             PropertyNameCaseInsensitive = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             Converters = {
-                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) // 👈 允许驼峰/小写匹配
+                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase), // 👈 允许驼峰/小写匹配
+                new Vector2JsonConverter()
             }
         };
 

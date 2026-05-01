@@ -8,7 +8,12 @@ namespace BladeStory.Service.Factories
     {
         public Scene CreateScene(SceneConfig sceneConfig)
         {
-            return new Scene(sceneConfig);
+            return new Scene(sceneConfig, 0, 0);
+        }
+
+        public Scene CreateScene(SceneConfig sceneConfig, float width, float height)
+        {
+            return new Scene(sceneConfig, width, height);
         }
     }
 }

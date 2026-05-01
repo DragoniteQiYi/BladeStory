@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
+using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Graphics;
 using MonoGame.Extended.Particles;
 
@@ -10,7 +11,7 @@ namespace BladeStory.Core.GameObjects
     /// <summary>
     /// 通用的游戏场景对象
     /// </summary>
-    public class Entity : IEntity
+    public class Entity : IEntity, ICollisionActor
     {
         // -----标识-----
         public Guid Id { get; set; }
@@ -21,10 +22,13 @@ namespace BladeStory.Core.GameObjects
 
         // -----组件-----
         public Transform2 Transform { get; set; }
-        public Sprite Sprite { get; set; }
+        public Sprite? Sprite { get; set; }
+        public virtual IShapeF? Bounds { get; protected set; } = new RectangleF();
+        public virtual string LayerName { get; set; } = "entity";
 
-        //public Entity? Parent { get; set; }
-        //public List<Entity> Children { get; private set; } = [];
+        protected Vector2 _boundsOffset;
+        protected float _boundsWidth;
+        protected float _boundsHeight;
 
         // 使用 Transform2 管理变换
         public Vector2 Position
@@ -45,10 +49,16 @@ namespace BladeStory.Core.GameObjects
             set => Transform.Scale = value;
         }
 
-        public SpriteEffects Effect
+        public Entity() 
         {
-            get => Sprite.Effect;
-            set => Sprite.Effect = value;
+            Id = Guid.NewGuid();
+            Transform = new Transform2(Vector2.Zero);
+        }
+
+        public Entity(Vector2 position)
+        {
+            Id = Guid.NewGuid();
+            Transform = new Transform2(Vector2.Zero);
         }
 
         public Entity(Texture2D texture)
@@ -59,6 +69,7 @@ namespace BladeStory.Core.GameObjects
             Sprite.Origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
         }
 
+
         public Entity(Texture2D texture, Vector2 position)
         {
             Id = Guid.NewGuid();
@@ -67,13 +78,20 @@ namespace BladeStory.Core.GameObjects
             Sprite.Origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
         }
 
-        public Entity(string name, Texture2D texture, Vector2 position)
+        public Entity(string name, Texture2D texture, Vector2 position, 
+            Vector2 boundsOffset, float width, float height)
         {
             Id = Guid.NewGuid();
             Name = name;
             Sprite = new Sprite(texture);
             Transform = new Transform2(position);
             Sprite.Origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
+            _boundsOffset = boundsOffset;
+            _boundsWidth = width;
+            _boundsHeight = height;
+
+            Vector2 basePoint = position + boundsOffset;
+            Bounds = new RectangleF(basePoint.X, basePoint.Y, width, height);
         }
 
         public virtual void Initialize() { }
@@ -82,6 +100,10 @@ namespace BladeStory.Core.GameObjects
         {
             if (!IsActive) return;
 
+            if (Bounds != null)
+            {
+                Bounds.Position = Position + _boundsOffset;
+            }
         }
 
         public virtual void LoadContent() { }
@@ -91,20 +113,21 @@ namespace BladeStory.Core.GameObjects
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (!IsActive || !IsVisible) return;
-            
+
+            spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Red, 1);
+
             spriteBatch.Draw(Sprite, Transform.Position);
+        }
+
+        public virtual void OnCollision(CollisionEventArgs collisionInfo) 
+        {
+
         }
 
 
         public virtual void Destroy()
         {
-            Sprite.TextureRegion.Texture?.Dispose();
-        }
-
-        public Vector2 GetWorldPosition()
-        {
-
-            return Position;
+            Sprite?.TextureRegion.Texture?.Dispose();
         }
     }
 }
